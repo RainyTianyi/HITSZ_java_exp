@@ -2,6 +2,7 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.item.BaseItem;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.List;
  */
 public class MobEnemy extends EnemyAircraft {
 
-    public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
-        super(locationX, locationY, speedX, speedY, hp);
+    public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    {
+        super(locationX, locationY, speedX, speedY, hp, 10, 40, false, false);
     }
 
     @Override
