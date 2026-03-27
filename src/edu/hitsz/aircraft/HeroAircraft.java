@@ -66,4 +66,7 @@ public class HeroAircraft extends AbstractAircraft {
         return res;
     }
 
+    public void increaseHp(int increase){
+        this.hp = Math.min(hp + increase, maxHp);
+    }
 }

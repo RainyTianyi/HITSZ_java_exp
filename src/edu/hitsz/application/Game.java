@@ -27,7 +27,7 @@ public class Game extends JPanel {
     private final int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
-    private final List<AbstractAircraft> enemyAircrafts;
+    private final List<EnemyAircraft> enemyAircrafts;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<BaseItem> items;
@@ -100,6 +100,7 @@ public class Game extends JPanel {
                                     30
                             ));
                         }
+                        // TODO 其他敌机的生成
                     }
                 }
 
@@ -109,6 +110,8 @@ public class Game extends JPanel {
                 bulletsMoveAction();
                 // 飞机移动
                 aircraftsMoveAction();
+                // 道具移动
+                itemsMoveAction();
                 // 撞击检测
                 crashCheckAction();
                 // 后处理
@@ -135,8 +138,8 @@ public class Game extends JPanel {
             //英雄机射击
             heroBullets.addAll(heroAircraft.shoot());
             //敌机射击
-            // 注意：当前版本未实现不同敌机发射子弹的时间差异
-            for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+            // TODO 当前版本未实现不同敌机发射子弹的时间差异
+            for (EnemyAircraft enemyAircraft : enemyAircrafts) {
                 enemyBullets.addAll(enemyAircraft.shoot());
             }
         }
@@ -152,8 +155,14 @@ public class Game extends JPanel {
     }
 
     private void aircraftsMoveAction() {
-        for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+        for (EnemyAircraft enemyAircraft : enemyAircrafts) {
             enemyAircraft.forward();
+        }
+    }
+
+    private void itemsMoveAction() {
+        for (BaseItem item : items) {
+            item.forward();
         }
     }
 
@@ -183,7 +192,7 @@ public class Game extends JPanel {
             if (bullet.notValid()) {
                 continue;
             }
-            for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+            for (EnemyAircraft enemyAircraft : enemyAircrafts) {
                 if (enemyAircraft.notValid()) {
                     // 已被其他子弹击毁的敌机，不再检测
                     // 避免多个子弹重复击毁同一敌机的判定
@@ -195,8 +204,8 @@ public class Game extends JPanel {
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
-                        // TODO 获得分数，产生道具补给
-                        score += 10;
+                        score += enemyAircraft.getScoreValue();
+                        items.addAll(enemyAircraft.generateItem());
                     }
                 }
                 // 英雄机 与 敌机 相撞，均损毁
@@ -208,7 +217,15 @@ public class Game extends JPanel {
         }
 
         // Todo: 我方获得道具，道具生效
-
+        for (BaseItem item : items) {
+            if (item.notValid()) {
+                continue;
+            }
+            if (item.crash(heroAircraft)) {
+                item.activate();
+                item.vanish();
+            }
+        }
     }
 
     /**
@@ -221,7 +238,7 @@ public class Game extends JPanel {
         enemyBullets.removeIf(AbstractFlyingObject::notValid);
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
-        // Todo: 删除无效道具
+        items.removeIf(AbstractFlyingObject::notValid);
     }
 
     /**

@@ -1,5 +1,8 @@
 package edu.hitsz.item;
 
+import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.Main;
+
 public class BloodItem extends BaseItem{
 
     public BloodItem(int locationX, int locationY, int speedX, int speedY, int value) {
@@ -7,5 +10,16 @@ public class BloodItem extends BaseItem{
     }
 
     @Override
-    public void activate() {}
+    public void activate() {
+        HeroAircraft.getHeroAircraft().increaseHp(value);
+    }
+
+    @Override
+    public void forward() {
+        super.forward();
+        // 判定 y 轴向下飞行出界
+        if (locationY >= Main.WINDOW_HEIGHT ) {
+            vanish();
+        }
+    }
 }

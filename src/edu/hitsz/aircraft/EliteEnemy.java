@@ -3,8 +3,10 @@ package edu.hitsz.aircraft;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
-import edu.hitsz.bullet.HeroBullet;
 import edu.hitsz.item.BaseItem;
+import edu.hitsz.item.BloodItem;
+import edu.hitsz.item.FireItem;
+import edu.hitsz.item.FirePlusItem;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +25,10 @@ public class EliteEnemy extends EnemyAircraft{
 
     //子弹射击方向 (向上发射：-1，向下发射：1)
     private int direction = 1;
+
+    // 精英敌机随机发射道具的概率
+    // TODO 改UML图
+    private static final double PROBABILITY = 1.00;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp
@@ -53,7 +59,29 @@ public class EliteEnemy extends EnemyAircraft{
 
     @Override
     public List<BaseItem> generateItem() {
-        return new LinkedList<>();
+        // 精英敌机坠毁时，以一定概率随机成一个道具
+        // 范围限定为：加血道具、火力道具、超级火力道具
+        List<BaseItem> res = new LinkedList<>();
+        if (Math.random() < PROBABILITY) {
+            int x = this.getLocationX();
+            int y = this.getLocationY();
+            int speedX = 0;
+            int speedY = 10;
+            // 随机选择一种道具生成
+            int itemType = (int) (Math.random() * 3);
+            switch (itemType) {
+                case 0:
+                    res.add(new BloodItem(x, y, speedX, speedY, 20));
+                    break;
+                case 1:
+                    res.add(new FireItem(x, y, speedX, speedY, 20));
+                    break;
+                case 2:
+                    res.add(new FirePlusItem(x, y, speedX, speedY, 40));
+                    break;
+            }
+        }
+        return res;
     }
 
 }

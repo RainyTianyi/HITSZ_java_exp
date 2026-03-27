@@ -63,6 +63,7 @@ class HeroAircraft {
 
     - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + {static} getInstance(): HeroAircraft
+    + increaseHp(int increase): void
     + forward(): void
     + shoot(): List<BaseBullet>
 }
