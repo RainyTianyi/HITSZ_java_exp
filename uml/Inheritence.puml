@@ -1,118 +1,187 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractFlyingObject
-{
-    # locationX:int
-    # locationY:int
-    # speedX:int
-    # speedY:int
-    # image:BufferedImage
-    # width:int
-    # height:int
-    # isValid:boolean
+' ==================== 基础飞行物 ====================
+abstract class AbstractFlyingObject {
+    # locationX: int
+    # locationY: int
+    # speedX: int
+    # speedY: int
+    # image: BufferedImage
+    # width: int
+    # height: int
+    # isValid: boolean
 
     + AbstractFlyingObject(int locationX, int locationY, int speedX, int speedY)
-    + forward():void
-    + crash(AbstractFlyingObject flyingObject):boolean
-    + setLocation(double locationX, double locationY):void
-    + getLocationX():int
-    + getLocationY():int
-    + getSpeedY():int
-    + getImage():BufferedImage
-    + getWidth():int
-    + getHeight():int
-    + notValid():boolean
-    + vanish():void
+    + forward(): void
+    + crash(AbstractFlyingObject flyingObject): boolean
+    + setLocation(double locationX, double locationY): void
+    + getLocationX(): int
+    + getLocationY(): int
+    + getSpeedY(): int
+    + getImage(): BufferedImage
+    + getWidth(): int
+    + getHeight(): int
+    + notValid(): boolean
+    + vanish(): void
 }
-abstract class AbstractAircraft
-{
-	# maxHp:int
-    # hp:int
+
+' ==================== 抽象飞行器（飞机） ====================
+abstract class AbstractAircraft {
+    # maxHp: int
+    # hp: int
+
     + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + decreaseHp(int decrease):void
-    + getHp():int
-    + {abstract} shoot():List<BaseBullet>
- }
-abstract class EnemyAircraft
-{
-    + {abstract} generateItem():List<BaseItem>
+    + decreaseHp(int decrease): void
+    + getHp(): int
+    + {abstract} shoot(): List<BaseBullet>
+}
+
+AbstractFlyingObject <|-- AbstractAircraft
+
+' ==================== 敌机抽象类 ====================
+abstract class EnemyAircraft {
+    # scoreValue: int
+    # shootCycle: int
+    # canDropItem: boolean
+    # canShoot: boolean
+
+    + EnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle, boolean canDropItem, boolean canShoot)
+    + {abstract} generateItem(): List<BaseItem>
+    + getScoreValue(): int
 }
 
 AbstractAircraft <|-- EnemyAircraft
 
+' ==================== 英雄机（单例） ====================
 class HeroAircraft {
-    - shootNum:int
-    - power:int
-    - direction:int
-    - {static} HeroAircraftInstance:HeroAircraft
+    - shootNum: int
+    - power: int
+    - direction: int
+    - {static} instance: HeroAircraft
 
     - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + {static} getHeroAircraft():HeroAircraft
-    + forward():void
-    + shoot():List<BaseBullet>
+    + {static} getInstance(): HeroAircraft
+    + forward(): void
+    + shoot(): List<BaseBullet>
 }
 
 AbstractAircraft <|-- HeroAircraft
 
+' ==================== 5 种敌机 ====================
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + generateItem():List<BaseItem>
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
 }
 
 class EliteEnemy {
-    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + generateItem():List<BaseItem>
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
 }
 
 class CrackEnemy {
-
+    + CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
 }
 
 class AceEnemy {
-
+    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
 }
 
 class BossEnemy {
-
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
 }
 
 EnemyAircraft <|-- MobEnemy
+EnemyAircraft <|-- EliteEnemy
+EnemyAircraft <|-- CrackEnemy
+EnemyAircraft <|-- AceEnemy
+EnemyAircraft <|-- BossEnemy
 
-abstract class BaseBullet
-{
-    - power:int
+' ==================== 子弹 ====================
+abstract class BaseBullet {
+    - power: int
+
     + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
-    + forward():void
-	+ getPower():int
+    + forward(): void
+    + getPower(): int
 }
 
 class HeroBullet {
-    + HeroBullet(int locationX, int locationY,
-     int speedX, int speedY, int power)
+    + HeroBullet(int locationX, int locationY, int speedX, int speedY, int power)
 }
 
 class EnemyBullet {
-    + EnemyBullet(int locationX, int locationY,
-     int speedX, int speedY, int power)
+    + EnemyBullet(int locationX, int locationY, int speedX, int speedY, int power)
 }
 
 BaseBullet <|-- HeroBullet
 BaseBullet <|-- EnemyBullet
 
-AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
 
+' ==================== 道具抽象类 ====================
 abstract class BaseItem {
-    + ItemActivate():void
+    # duration: int
+    # value : int
+
+    + BaseItem(int locationX, int locationY, int speedX, int speedY,
+    int duration, int value)
+    + {abstract} activate(): void
+    + getDuration() : int
+    + getValue() : int
 }
 
-
-
 AbstractFlyingObject <|-- BaseItem
+
+' ==================== 5 种道具 ====================
+class BloodItem {
+    + BloodItem(int locationX, int locationY, int speedX, int speedY, int value)
+    + activate(): void
+}
+
+class FireItem {
+    + FireItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+}
+
+class FirePlusItem {
+    + FirePlusItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+}
+
+class IceItem {
+    + IceItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+}
+
+class BombItem {
+    + BombItem(int locationX, int locationY, int speedX, int speedY)
+    + activate(): void
+}
+
+BaseItem <|-- BloodItem
+BaseItem <|-- FireItem
+BaseItem <|-- FirePlusItem
+BaseItem <|-- IceItem
+BaseItem <|-- BombItem
 
 @enduml
