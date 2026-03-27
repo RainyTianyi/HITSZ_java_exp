@@ -7,16 +7,10 @@ import edu.hitsz.item.BaseItem;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * 精英敌机
- * 可射击、掉落道具
- * @author hitsz
- */
-public class EliteEnemy extends EnemyAircraft{
-
-    public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
+public class CrackEnemy extends EnemyAircraft{
+    public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp
-        , 20, 40, true, true);
+        , 30, 20, true, true);
     }
 
     @Override
@@ -37,5 +31,4 @@ public class EliteEnemy extends EnemyAircraft{
     public List<BaseItem> generateItem() {
         return new LinkedList<>();
     }
-
 }

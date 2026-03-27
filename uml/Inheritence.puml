@@ -71,40 +71,35 @@ AbstractAircraft <|-- HeroAircraft
 
 ' ==================== 5 种敌机 ====================
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle)
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward(): void
     + shoot(): List<BaseBullet>
     + generateItem(): List<BaseItem>
 }
 
 class EliteEnemy {
-    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle)
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward(): void
     + shoot(): List<BaseBullet>
     + generateItem(): List<BaseItem>
 }
 
 class CrackEnemy {
-    + CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle)
+    + CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward(): void
     + shoot(): List<BaseBullet>
     + generateItem(): List<BaseItem>
 }
 
 class AceEnemy {
-    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle)
+    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward(): void
     + shoot(): List<BaseBullet>
     + generateItem(): List<BaseItem>
 }
 
 class BossEnemy {
-    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle)
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward(): void
     + shoot(): List<BaseBullet>
     + generateItem(): List<BaseItem>
