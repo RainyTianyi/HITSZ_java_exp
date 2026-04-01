@@ -18,10 +18,10 @@ public class EliteEnemy extends EnemyAircraft{
     // 默认每次发射一枚子弹
 
     //子弹威力
-    private int power = 30;
+    private final int power = 30;
 
     //子弹射击方向 (向上发射：-1，向下发射：1)
-    private int direction = 1;
+    private final int direction = 1;
 
     // 精英敌机随机发射道具的概率
     // TODO 改UML图
