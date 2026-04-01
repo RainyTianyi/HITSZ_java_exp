@@ -1,14 +1,10 @@
 package edu.hitsz.application;
 
 
-import edu.hitsz.aircraft.EliteEnemy;
-import edu.hitsz.aircraft.HeroAircraft;
-import edu.hitsz.aircraft.MobEnemy;
+import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.bullet.HeroBullet;
-import edu.hitsz.item.BloodItem;
-import edu.hitsz.item.FireItem;
-import edu.hitsz.item.FirePlusItem;
+import edu.hitsz.item.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -46,6 +42,8 @@ public class ImageManager {
     public static BufferedImage BLOOD_ITEM_IMAGE;
     public static BufferedImage FIRE_ITEM_IMAGE;
     public static BufferedImage FIRE_PLUS_ITEM_IMAGE;
+    public static BufferedImage BOMB_ITEM_IMAGE;
+    public static BufferedImage ICE_ITEM_IMAGE;
 
 
     static {
@@ -63,13 +61,16 @@ public class ImageManager {
             // 加载敌机图片
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
             ELITE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elite.png"));
-            // TODO: 加载其他enemy图片
+            CRACK_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePlus.png"));
+            ACE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePro.png"));
+            BOSS_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/boss.png"));
 
             // 加载道具图片
             BLOOD_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_blood.png"));
             FIRE_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bullet.png"));
             FIRE_PLUS_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bulletPlus.png"));
-            // TODO: 加载其他item图片
+            BOMB_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bomb.png"));
+            ICE_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_freeze.png"));
 
             CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_IMAGE);
 
@@ -78,10 +79,15 @@ public class ImageManager {
 
             CLASSNAME_IMAGE_MAP.put(EliteEnemy.class.getName(), ELITE_ENEMY_IMAGE);
             CLASSNAME_IMAGE_MAP.put(MobEnemy.class.getName(), MOB_ENEMY_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(BossEnemy.class.getName(), BOSS_ENEMY_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(CrackEnemy.class.getName(), CRACK_ENEMY_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(AceEnemy.class.getName(), ACE_ENEMY_IMAGE);
 
             CLASSNAME_IMAGE_MAP.put(BloodItem.class.getName(), BLOOD_ITEM_IMAGE);
             CLASSNAME_IMAGE_MAP.put(FireItem.class.getName(), FIRE_ITEM_IMAGE);
             CLASSNAME_IMAGE_MAP.put(FirePlusItem.class.getName(), FIRE_PLUS_ITEM_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(BombItem.class.getName(), BOMB_ITEM_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(IceItem.class.getName(), ICE_ITEM_IMAGE);
 
 
         } catch (IOException e) {

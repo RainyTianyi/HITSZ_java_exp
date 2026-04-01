@@ -1,5 +1,6 @@
 package edu.hitsz.application;
 
+import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
@@ -75,32 +76,29 @@ public class Game extends JPanel {
             public void run() {
 
                 enemySpawnCounter++;
-                if (enemySpawnCounter >=enemySpawnCycle) {
+                if (enemySpawnCounter >= enemySpawnCycle) {
                     enemySpawnCounter = 0;
-                    // 随机产生普通敌机或精英敌机
-                    int type = (int) (Math.random() * 10);
+                    EnemyAircraftFactory enemyAircraftFactory;
+                    // 随机产生除BossEnemy之外的其他Enemy
+                    int type = (int) (Math.random() * 100);
                     if (enemyAircrafts.size() < enemyMaxNumber) {
-                        if (type < 8) {
-                            enemyAircrafts.add(new MobEnemy(
-                                    (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                    (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                                    0,
-                                    10,
-                                    30
-                            ));
+                        if (type < 40) {
+                            enemyAircraftFactory = new MobEnemyFactory();
+                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                         }
-                        else {
+                        else if (type < 70){
                             // 随机产生精英敌机的横向速度，在[-10, 10]之间
-                            int speedX = (int) (Math.random() * 20 - 10);
-                            enemyAircrafts.add(new EliteEnemy(
-                                    (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth())),
-                                    (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                                    speedX,
-                                    5,
-                                    30
-                            ));
+                            enemyAircraftFactory = new EliteEnemyFactory();
+                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                         }
-                        // TODO 其他敌机的生成
+                        else if (type < 90){
+                            enemyAircraftFactory = new CrackEnemyFactory();
+                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                        }
+                        else{
+                            enemyAircraftFactory = new AceEnemyFactory();
+                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                        }
                     }
                 }
 
@@ -216,7 +214,6 @@ public class Game extends JPanel {
             }
         }
 
-        // Todo: 我方获得道具，道具生效
         for (BaseItem item : items) {
             if (item.notValid()) {
                 continue;
