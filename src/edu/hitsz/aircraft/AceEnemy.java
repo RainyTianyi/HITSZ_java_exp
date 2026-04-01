@@ -23,6 +23,8 @@ public class AceEnemy extends EnemyAircraft{
         }
     }
 
+    // TODO: 王牌敌机扇形射击
+    // TODO: 王牌敌机一定会掉落五种道具中的一种
     @Override
     public List<BaseBullet> shoot() {
         return new LinkedList<>();

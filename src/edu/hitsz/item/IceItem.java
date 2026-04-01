@@ -7,5 +7,5 @@ public class IceItem extends BaseItem{
     }
 
     @Override
-    public void activate() {}
+    public void activate() { System.out.println("IceItem active!"); }
 }

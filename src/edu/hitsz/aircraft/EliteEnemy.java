@@ -25,7 +25,7 @@ public class EliteEnemy extends EnemyAircraft{
 
     // 精英敌机随机发射道具的概率
     // TODO 改UML图
-    private static final double PROBABILITY = 0.80;
+    private static final double PROBABILITY = 0.50;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp

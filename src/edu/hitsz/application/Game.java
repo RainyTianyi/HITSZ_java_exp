@@ -248,7 +248,7 @@ public class Game extends JPanel {
             gameOverFlag = true;
             System.out.println("Game Over!");
         }
-    };
+    }
 
     //***********************
     //      Paint 各部分
