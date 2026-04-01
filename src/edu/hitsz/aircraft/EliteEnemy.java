@@ -60,33 +60,28 @@ public class EliteEnemy extends EnemyAircraft{
         // 范围限定为：加血道具、火力道具、超级火力道具
         List<BaseItem> res = new LinkedList<>();
         if (Math.random() < PROBABILITY) {
+            // 道具从敌机位置生成
             int x = this.getLocationX();
             int y = this.getLocationY();
-            int speedX = 0;
-            int speedY = 10;
             // 随机选择一种道具生成
             int itemType = (int) (Math.random() * 3);
             String itemTypeName;
-            int itemValue;
 
             switch (itemType) {
                 case 0:
                     itemTypeName = ItemFactory.TYPE_BLOOD;
-                    itemValue = 20;
                     break;
                 case 1:
                     itemTypeName = ItemFactory.TYPE_FIRE;
-                    itemValue = 20;
                     break;
                 case 2:
                     itemTypeName = ItemFactory.TYPE_FIRE_PLUS;
-                    itemValue = 40;
                     break;
                 default:
                     return res;
             }
 
-            BaseItem item = ItemFactory.createItem(itemTypeName, x, y, speedX, speedY, itemValue);
+            BaseItem item = ItemFactory.createItem(itemTypeName, x, y);
             res.add(item);
         }
         return res;

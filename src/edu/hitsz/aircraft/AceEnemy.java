@@ -41,7 +41,6 @@ public class AceEnemy extends EnemyAircraft{
         }
     }
 
-    // TODO: 王牌敌机一定会掉落五种道具中的一种
     @Override
     public List<BaseBullet> shoot() {
         List<BaseBullet> res = new LinkedList<>();
@@ -68,42 +67,34 @@ public class AceEnemy extends EnemyAircraft{
         // 王牌敌机一定会掉落一种道具
         List<BaseItem> res = new LinkedList<>();
 
-        // 道具的位置和速度
+        // 道具从敌机位置生成
         int x = this.getLocationX();
         int y = this.getLocationY();
-        int speedX = 0;
-        int speedY = 10;
 
         int itemType = (int) (Math.random() * 5);
         String itemTypeName;
-        int itemValue;
 
         switch (itemType) {
             case 0:
                 itemTypeName = ItemFactory.TYPE_BLOOD;
-                itemValue = 20;
                 break;
             case 1:
                 itemTypeName = ItemFactory.TYPE_FIRE;
-                itemValue = 0;
                 break;
             case 2:
                 itemTypeName = ItemFactory.TYPE_FIRE_PLUS;
-                itemValue = 0;
                 break;
             case 3:
                 itemTypeName = ItemFactory.TYPE_BOMB;
-                itemValue = 50;
                 break;
             case 4:
                 itemTypeName = ItemFactory.TYPE_ICE;
-                itemValue = 100;
                 break;
             default:
                 return res;
         }
 
-        BaseItem item = ItemFactory.createItem(itemTypeName, x, y, speedX, speedY, itemValue);
+        BaseItem item = ItemFactory.createItem(itemTypeName, x, y);
         res.add(item);
         return res;
     }
