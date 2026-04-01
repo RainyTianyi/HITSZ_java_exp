@@ -43,11 +43,9 @@ AbstractFlyingObject <|-- AbstractAircraft
 abstract class EnemyAircraft {
     # scoreValue: int
     # shootCycle: int
-    # canDropItem: boolean
-    # canShoot: boolean
 
     + EnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp,
-    int scoreValue, int shootCycle, boolean canDropItem, boolean canShoot)
+    int scoreValue, int shootCycle)
     + {abstract} generateItem(): List<BaseItem>
     + getScoreValue(): int
 }

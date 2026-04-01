@@ -17,8 +17,7 @@ abstract class BaseItem {
 
 ' 道具简单工厂类
 class ItemFactory {
-    + createItem(string itemName, int locationX, int locationY, int speedX, int speedY,
-                 int duration, int value) : BaseItem
+    + createItem(String type, int locationX, int locationY) : BaseItem
 }
 
 ' 工厂实现依赖抽象产品

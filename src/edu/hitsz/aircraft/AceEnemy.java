@@ -13,19 +13,19 @@ public class AceEnemy extends EnemyAircraft{
 
     // TODO 改UML图
     // 默认每次发射三枚子弹
-    private final int shootNum = 3;
+    private static final int shootNum = 3;
 
     // 子弹威力
-    private final int power = 30;
+    private static final int power = 30;
 
     // 子弹射击方向 (向上发射：-1，向下发射：1)
-    private final int direction = 1;
+    private static final int direction = 1;
 
     // 子弹速度
-    private final int speed = 10;
+    private static final int speed = 10;
 
     // 扇形半顶角
-    private final int angle = 30;
+    private static final int angle = 30;
 
     public AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp

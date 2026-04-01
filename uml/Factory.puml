@@ -5,7 +5,7 @@
 
 ' 敌机工厂类
 interface EnemyAircraftFactory {
-    + createEnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+    + createEnemyAircraft(): EnemyAircraft
 }
 
 ' 工厂实现依赖抽象产品
