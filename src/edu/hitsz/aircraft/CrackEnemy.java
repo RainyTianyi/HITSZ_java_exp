@@ -26,7 +26,7 @@ public class CrackEnemy extends EnemyAircraft{
 
     public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp
-        , 30, 20, true, true);
+        , 30, 30, true, true);
     }
 
     @Override
@@ -61,6 +61,7 @@ public class CrackEnemy extends EnemyAircraft{
         // 范围限定为：加血道具、火力道具、超级火力道具、炸弹道具
         List<BaseItem> res = new LinkedList<>();
         if (Math.random() < PROBABILITY) {
+
             int x = this.getLocationX();
             int y = this.getLocationY();
             int speedX = 0;
