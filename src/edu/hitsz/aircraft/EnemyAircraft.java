@@ -2,7 +2,6 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.item.BaseItem;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class EnemyAircraft extends AbstractAircraft{

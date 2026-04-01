@@ -1,6 +1,5 @@
 package edu.hitsz.item;
 
-import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
 
 public abstract class BaseItem extends AbstractFlyingObject {

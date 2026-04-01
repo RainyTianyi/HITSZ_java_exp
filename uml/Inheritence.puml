@@ -152,26 +152,31 @@ AbstractFlyingObject <|-- BaseItem
 class BloodItem {
     + BloodItem(int locationX, int locationY, int speedX, int speedY, int value)
     + activate(): void
+    + forward(): void
 }
 
 class FireItem {
     + FireItem(int locationX, int locationY, int speedX, int speedY, int duration)
     + activate(): void
+    + forward(): void
 }
 
 class FirePlusItem {
     + FirePlusItem(int locationX, int locationY, int speedX, int speedY, int duration)
     + activate(): void
+    + forward(): void
 }
 
 class IceItem {
     + IceItem(int locationX, int locationY, int speedX, int speedY, int duration)
     + activate(): void
+    + forward(): void
 }
 
 class BombItem {
     + BombItem(int locationX, int locationY, int speedX, int speedY, int value)
     + activate(): void
+    + forward(): void
 }
 
 BaseItem <|-- BloodItem

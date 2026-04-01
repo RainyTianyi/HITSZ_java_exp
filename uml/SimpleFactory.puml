@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' 道具生成：使用简单工厂模式
+
+' 道具抽象类
+abstract class BaseItem {
+    # duration: int
+    # value : int
+
+    + BaseItem(int locationX, int locationY, int speedX, int speedY,
+    int duration, int value)
+    + {abstract} activate(): void
+    + getDuration() : int
+    + getValue() : int
+}
+
+' 道具简单工厂类
+class ItemFactory {
+    + createItem(string itemName, int locationX, int locationY, int speedX, int speedY,
+                 int duration, int value) : BaseItem
+}
+
+' 工厂实现依赖抽象产品
+ItemFactory ..> BaseItem : creates >
+
+' ==================== 5 种道具 ====================
+class BloodItem {
+    + BloodItem(int locationX, int locationY, int speedX, int speedY, int value)
+    + activate(): void
+    + forward(): void
+}
+
+class FireItem {
+    + FireItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+    + forward(): void
+}
+
+class FirePlusItem {
+    + FirePlusItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+    + forward(): void
+}
+
+class IceItem {
+    + IceItem(int locationX, int locationY, int speedX, int speedY, int duration)
+    + activate(): void
+    + forward(): void
+}
+
+class BombItem {
+    + BombItem(int locationX, int locationY, int speedX, int speedY, int value)
+    + activate(): void
+    + forward(): void
+}
+
+BaseItem <|-- BloodItem
+BaseItem <|-- FireItem
+BaseItem <|-- FirePlusItem
+BaseItem <|-- IceItem
+BaseItem <|-- BombItem
+
+@enduml

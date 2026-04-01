@@ -1,0 +1,98 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' 敌机生成：使用工厂方法模式
+
+' 敌机工厂类
+interface EnemyAircraftFactory {
+    + createEnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+' 工厂实现依赖抽象产品
+EnemyAircraftFactory ..> EnemyAircraft : creates >
+
+' 敌机工厂类实现类
+class MobEnemyFactory {
+    + createAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+class EliteEnemyFactory {
+    + createAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+class CrackEnemyFactory {
+    + createAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+class AceEnemyFactory {
+    + createAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+class BossEnemyFactory {
+    + createAircraft(int locationX, int locationY, int speedX, int speedY, int hp): EnemyAircraft
+}
+
+' 工厂实现抽象工厂接口
+EnemyAircraftFactory <|-- MobEnemyFactory
+EnemyAircraftFactory <|-- EliteEnemyFactory
+EnemyAircraftFactory <|-- CrackEnemyFactory
+EnemyAircraftFactory <|-- AceEnemyFactory
+EnemyAircraftFactory <|-- BossEnemyFactory
+
+' 敌机抽象类
+abstract class EnemyAircraft {
+    # scoreValue: int
+    # shootCycle: int
+    # canDropItem: boolean
+    # canShoot: boolean
+
+    + EnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp,
+    int scoreValue, int shootCycle, boolean canDropItem, boolean canShoot)
+    + {abstract} generateItem(): List<BaseItem>
+    + getScoreValue(): int
+}
+
+' ==================== 5 种敌机 ====================
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
+}
+
+class EliteEnemy {
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
+}
+
+class CrackEnemy {
+    + CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
+}
+
+class AceEnemy {
+    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
+}
+
+class BossEnemy {
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + generateItem(): List<BaseItem>
+}
+
+EnemyAircraft <|-- MobEnemy
+EnemyAircraft <|-- EliteEnemy
+EnemyAircraft <|-- CrackEnemy
+EnemyAircraft <|-- AceEnemy
+EnemyAircraft <|-- BossEnemy
+
+
+@enduml
