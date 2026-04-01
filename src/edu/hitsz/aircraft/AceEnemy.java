@@ -29,7 +29,7 @@ public class AceEnemy extends EnemyAircraft{
 
     public AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp
-                , 50, 20, true, true);
+                , 50, 20);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class MobEnemy extends EnemyAircraft {
 
     public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     {
-        super(locationX, locationY, speedX, speedY, hp, 10, 40, false, false);
+        super(locationX, locationY, speedX, speedY, hp, 10, 40);
     }
 
     @Override

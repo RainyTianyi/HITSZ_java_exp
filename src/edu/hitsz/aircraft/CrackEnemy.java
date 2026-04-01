@@ -26,7 +26,7 @@ public class CrackEnemy extends EnemyAircraft{
 
     public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp
-        , 30, 30, true, true);
+        , 30, 30);
     }
 
     @Override
