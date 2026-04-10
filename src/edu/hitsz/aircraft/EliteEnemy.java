@@ -15,7 +15,11 @@ import java.util.List;
  */
 public class EliteEnemy extends EnemyAircraft{
 
-    // 默认每次发射一枚子弹
+    // 精英敌机得分值
+    private static final int scoreValue = 20;
+
+    // 精英敌机发射子弹的间隔
+    private static final int shootCycle = 20;
 
     //子弹威力
     private final static int power = 30;
@@ -28,8 +32,7 @@ public class EliteEnemy extends EnemyAircraft{
     private static final double PROBABILITY = 0.50;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
-        super(locationX, locationY, speedX, speedY, hp
-        , 20, 40);
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
     }
 
     @Override

@@ -11,6 +11,12 @@ import java.util.List;
 
 public class CrackEnemy extends EnemyAircraft{
 
+    // 精锐敌机得分值
+    private static final int scoreValue = 30;
+
+    // 精锐敌机发射子弹的间隔
+    private static final int shootCycle = 30;
+
     // 默认每次发射两枚子弹
     private static final int shootNum = 2;
 
@@ -25,8 +31,7 @@ public class CrackEnemy extends EnemyAircraft{
     private static final double PROBABILITY = 0.80;
 
     public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
-        super(locationX, locationY, speedX, speedY, hp
-        , 30, 30);
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
     }
 
     @Override

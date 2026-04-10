@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' 上下文单元
+class ShootPattern {
+
+}
+
+' 策略接口
+interface ShootStrategy {
+    void shoot(ShootPattern pattern);
+}
+
+@enduml

@@ -9,9 +9,14 @@ import java.util.List;
 
 public class BossEnemy extends EnemyAircraft{
 
+    // boss敌机得分值
+    private static final int scoreValue = 100;
+
+    // boss敌机发射子弹的间隔
+    private static final int shootCycle = 40;
+
     public BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
-        super(locationX, locationY, speedX, speedY, hp
-                , 100, 40);
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
     }
 
     @Override

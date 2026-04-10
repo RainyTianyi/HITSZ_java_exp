@@ -14,9 +14,15 @@ import java.util.List;
  */
 public class MobEnemy extends EnemyAircraft {
 
+    // 普通敌机得分值
+    private static final int scoreValue = 10;
+
+    // 普通敌机发射子弹的间隔
+    private static final int shootCycle = 40;
+
     public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     {
-        super(locationX, locationY, speedX, speedY, hp, 10, 40);
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
     }
 
     @Override

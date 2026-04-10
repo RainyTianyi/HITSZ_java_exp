@@ -12,7 +12,7 @@ public class MobEnemyFactory implements EnemyAircraftFactory {
         int locationY = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2);
         int speedX = 0;
         int speedY = 10;
-        int hp = 30;
+        int hp = 10;
         return new MobEnemy(locationX, locationY, speedX, speedY, hp);
     }
 }

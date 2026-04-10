@@ -11,6 +11,12 @@ import java.util.List;
 
 public class AceEnemy extends EnemyAircraft{
 
+    // 王牌敌机得分值
+    private static final int scoreValue = 50;
+
+    // 王牌敌机发射子弹的间隔
+    private static final int shootCycle = 20;
+
     // TODO 改UML图
     // 默认每次发射三枚子弹
     private static final int shootNum = 3;
@@ -28,8 +34,7 @@ public class AceEnemy extends EnemyAircraft{
     private static final int angle = 30;
 
     public AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
-        super(locationX, locationY, speedX, speedY, hp
-                , 50, 20);
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
     }
 
     @Override
