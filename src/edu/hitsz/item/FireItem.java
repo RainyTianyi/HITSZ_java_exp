@@ -1,5 +1,7 @@
 package edu.hitsz.item;
 
+import edu.hitsz.ShootStrategy.ScatterShootStrategy;
+import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.application.Main;
 
 public class FireItem extends BaseItem{
@@ -10,8 +12,7 @@ public class FireItem extends BaseItem{
 
     @Override
     public void activate() {
-        // 暂不做实现，打印信息"FireItem active!"
-        // TODO 实现火力单元 注意更改上方的duration
+        HeroAircraft.getHeroAircraft().shootPattern.setShootStrategy(new ScatterShootStrategy());
         System.out.println("FireItem active!");
     }
 

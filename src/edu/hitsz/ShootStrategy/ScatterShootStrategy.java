@@ -30,11 +30,11 @@ public class ScatterShootStrategy implements ShootStrategy{
         for(int i=0; i<shootNum; i++){
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            int speedX = (int) (speed * Math.sin(Math.toRadians(angles[i])));
-            int speedY = (int) (speed * Math.cos(Math.toRadians(angles[i]))) + aircraftSpeedY;
+            int speedX = direction * (int) (speed * Math.sin(Math.toRadians(angles[i])));
+            int speedY = direction * ((int) (speed * Math.cos(Math.toRadians(angles[i]))) + aircraftSpeedY);
             if (direction == -1) {
                 // 代表是英雄机
-                bullet = new HeroBullet(x + (i*2 - shootNum + 1)*20, y, speedX, speedY, power);
+                bullet = new HeroBullet(x + -(i*2 - shootNum + 1)*20, y, speedX, speedY, power);
             }
             else {
                 bullet = new EnemyBullet(x + (i * 2 - shootNum + 1) * 20, y, speedX, speedY, power);

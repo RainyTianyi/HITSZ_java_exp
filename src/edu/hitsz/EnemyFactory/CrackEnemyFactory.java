@@ -12,7 +12,7 @@ public class CrackEnemyFactory implements EnemyAircraftFactory {
         int locationY = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2);
         int speedX = (int) (Math.random() * 10 - 5);
         int speedY = 8;
-        int hp = 30;
+        int hp = 50;
         return new CrackEnemy(locationX, locationY, speedX, speedY, hp);
     }
 }

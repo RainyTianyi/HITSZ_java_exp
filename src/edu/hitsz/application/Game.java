@@ -40,6 +40,9 @@ public class Game extends JPanel {
     protected double enemySpawnCycle  =  20;
     private int enemySpawnCounter = 0;
 
+    //Boss敌机生成，记录分数
+    private int bossSpawnScore = 0;
+
     //英雄机和敌机射击周期
     protected double shootCycle = 20;
     private int shootCounter = 0;
@@ -100,6 +103,13 @@ public class Game extends JPanel {
                             enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                         }
                     }
+                }
+
+                // 积分每到达1000分，生成Boss敌机
+                if (bossSpawnScore >= 1000) {
+                    EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
+                    enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                    bossSpawnScore = 0;
                 }
 
                 // 飞机发射子弹
@@ -203,6 +213,7 @@ public class Game extends JPanel {
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
                         score += enemyAircraft.getScoreValue();
+                        bossSpawnScore += enemyAircraft.getScoreValue();
                         items.addAll(enemyAircraft.generateItem());
                     }
                 }

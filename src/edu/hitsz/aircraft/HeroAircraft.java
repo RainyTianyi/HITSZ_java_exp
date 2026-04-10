@@ -14,17 +14,14 @@ import java.util.List;
  */
 public class HeroAircraft extends AbstractAircraft {
 
-    //每次射击发射子弹数量
-    private int shootNum = 1;
-
     //子弹威力
-    private int power = 30;
+    private static final int power = 30;
 
     //子弹射击方向 (向上发射：-1，向下发射：1)
-    private int direction = -1;
+    private static final int direction = -1;
 
     // 发射策略
-    private ShootPattern shootPattern;
+    public ShootPattern shootPattern;
 
     // 单一英雄机实例
     private static HeroAircraft HeroAircraftInstance;
@@ -39,7 +36,7 @@ public class HeroAircraft extends AbstractAircraft {
             HeroAircraftInstance = new HeroAircraft(
                     Main.WINDOW_WIDTH / 2,
                     Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                    0, 0, 100, new SingleShootStrategy());
+                    0, 0, 300, new SingleShootStrategy());
         }
         return HeroAircraftInstance;
     }

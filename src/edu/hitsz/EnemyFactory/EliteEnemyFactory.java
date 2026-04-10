@@ -12,7 +12,7 @@ public class EliteEnemyFactory implements EnemyAircraftFactory {
         int locationY = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2);
         int speedX = (int) (Math.random() * 10 - 5);
         int speedY = 10;
-        int hp = 20;
+        int hp = 30;
         return new EliteEnemy(locationX, locationY, speedX, speedY, hp);
     }
 }

@@ -29,7 +29,7 @@ public class ItemFactory {
         // 生成各种道具，并制定道具相关的值
         switch (type) {
             case TYPE_BLOOD:
-                value = 20; // 回血量大小
+                value = 50; // 回血量大小
                 item = new BloodItem(locationX, locationY, speedX, speedY, value);
                 break;
             case TYPE_FIRE:

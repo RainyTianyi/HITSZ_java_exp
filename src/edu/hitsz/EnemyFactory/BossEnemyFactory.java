@@ -12,7 +12,7 @@ public class BossEnemyFactory implements EnemyAircraftFactory {
         int locationY = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.15);
         int speedX = (int) (Math.random() * 6 - 3);
         int speedY = 0;
-        int hp = 100;
+        int hp = 200;
         return new BossEnemy(locationX, locationY, speedX, speedY, hp);
     }
 }
