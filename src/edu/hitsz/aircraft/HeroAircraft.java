@@ -52,7 +52,7 @@ public class HeroAircraft extends AbstractAircraft {
      * @return 射击出的子弹List
      */
     public List<BaseBullet> shoot() {
-        return shootPattern.shoot(this.locationX, this.locationY, this.direction, this.power, this.speedY);
+        return shootPattern.shoot(this.locationX, this.locationY, direction, power, this.speedY);
     }
 
     public void increaseHp(int increase){
