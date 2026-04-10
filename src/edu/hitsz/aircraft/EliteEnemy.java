@@ -1,5 +1,7 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.ShootStrategy.ShootStrategy;
+import edu.hitsz.ShootStrategy.SingleShootStrategy;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
@@ -27,6 +29,9 @@ public class EliteEnemy extends EnemyAircraft{
     //子弹射击方向 (向上发射：-1，向下发射：1)
     private final static int direction = 1;
 
+    // 子弹射击策略
+    private static final ShootStrategy shootStrategy = new SingleShootStrategy();
+
     // 精英敌机随机发射道具的概率
     // TODO 改UML图
     private static final double PROBABILITY = 0.50;
@@ -46,15 +51,7 @@ public class EliteEnemy extends EnemyAircraft{
 
     @Override
     public List<BaseBullet> shoot() {
-        List<BaseBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction*2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction*5;
-        BaseBullet bullet;
-        bullet = new EnemyBullet(x, y, speedX, speedY, power);
-        res.add(bullet);
-        return res;
+        return shootStrategy.shoot(locationX, locationY, direction, power, speedY);
     }
 
     @Override
