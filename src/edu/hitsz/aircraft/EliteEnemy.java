@@ -1,11 +1,9 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.ShootStrategy.ShootPattern;
-import edu.hitsz.ShootStrategy.ShootStrategy;
 import edu.hitsz.ShootStrategy.SingleShootStrategy;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.item.*;
 
 import java.util.LinkedList;

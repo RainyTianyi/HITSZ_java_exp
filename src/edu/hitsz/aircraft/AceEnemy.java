@@ -1,9 +1,7 @@
 package edu.hitsz.aircraft;
 
-import com.sun.jdi.ShortType;
 import edu.hitsz.ShootStrategy.ScatterShootStrategy;
 import edu.hitsz.ShootStrategy.ShootPattern;
-import edu.hitsz.ShootStrategy.ShootStrategy;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.item.BaseItem;

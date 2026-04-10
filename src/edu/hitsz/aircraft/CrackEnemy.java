@@ -2,10 +2,8 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.ShootStrategy.DoubleShootStrategy;
 import edu.hitsz.ShootStrategy.ShootPattern;
-import edu.hitsz.ShootStrategy.ShootStrategy;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.item.BaseItem;
 import edu.hitsz.item.ItemFactory;
 

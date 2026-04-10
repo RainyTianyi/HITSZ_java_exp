@@ -6,9 +6,6 @@ import edu.hitsz.ShootStrategy.SingleShootStrategy;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.HeroBullet;
-
-import java.util.LinkedList;
 import java.util.List;
 
 /**
