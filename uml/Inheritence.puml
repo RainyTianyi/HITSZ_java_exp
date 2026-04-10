@@ -54,13 +54,13 @@ AbstractAircraft <|-- EnemyAircraft
 
 ' ==================== 英雄机（单例） ====================
 class HeroAircraft {
-    - shootNum: int
-    - power: int
-    - direction: int
-    - {static} instance: HeroAircraft
+    - {static} {final} power: int
+    - {static} {final} direction: int
+    + shootPattern: ShootPattern
+    - {static} HeroAircraftInstance: HeroAircraft
 
-    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + {static} getInstance(): HeroAircraft
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy)
+    + {static} getHeroAircraft(): HeroAircraft
     + increaseHp(int increase): void
     + forward(): void
     + shoot(): List<BaseBullet>
