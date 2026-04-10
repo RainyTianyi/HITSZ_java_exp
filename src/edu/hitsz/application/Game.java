@@ -106,7 +106,7 @@ public class Game extends JPanel {
                 }
 
                 // 积分每到达1000分，生成Boss敌机
-                if (bossSpawnScore >= 1000) {
+                if (bossSpawnScore >= 500) {
                     EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
                     enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                     bossSpawnScore = 0;

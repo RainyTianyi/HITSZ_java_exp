@@ -27,7 +27,10 @@ public class CircleShootStrategy implements ShootStrategy{
             int speedX = (int) (speed * Math.sin(Math.toRadians(angles[i])));
             int speedY = (int) (speed * Math.cos(Math.toRadians(angles[i]))) + aircraftSpeedY;
             if (direction == -1) {
-                // 代表是英雄机
+                // 代表是英雄机 子弹数量减半
+                if (i % 2 == 0) {
+                    continue;
+                }
                 bullet = new HeroBullet(x, y, speedX, speedY, power);
             }
             else {

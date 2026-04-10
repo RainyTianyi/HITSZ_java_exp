@@ -33,16 +33,15 @@ public class BossEnemy extends EnemyAircraft{
 
     @Override
     public void forward() {
-        super.forward();
-        // 判定 y 轴向下飞行出界
-        if (locationY >= Main.WINDOW_HEIGHT ) {
-            vanish();
-        }
-        // 判断 x 轴飞行，如果出界速度反向
-        if (locationX <= 0 || locationX >= Main.WINDOW_WIDTH) {
+        // 先检测边界，如果碰到左右边界则速度反向
+        if (locationX <= getWidth() / 2 || locationX >= Main.WINDOW_WIDTH - getWidth() / 2) {
             speedX = -speedX;
         }
+        // 再执行移动
+        locationX += speedX;
+        // y轴速度为0，不需要移动
     }
+
 
     @Override
     public List<BaseBullet> shoot() {
@@ -82,7 +81,7 @@ public class BossEnemy extends EnemyAircraft{
                     return res;
             }
 
-            BaseItem item = ItemFactory.createItem(itemTypeName, x, y);
+            BaseItem item = ItemFactory.createItem(itemTypeName, x + i * 20, y + (i-1) * 20);
             res.add(item);
         }
 
