@@ -11,7 +11,7 @@ public class AceEnemyFactory implements EnemyAircraftFactory {
         int locationX = (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.ACE_ENEMY_IMAGE.getWidth()));
         int locationY = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2);
         int speedX = (int) (Math.random() * 10 - 5);
-        int speedY = 12;
+        int speedY = 8;
         int hp = 50;
         return new AceEnemy(locationX, locationY, speedX, speedY, hp);
     }

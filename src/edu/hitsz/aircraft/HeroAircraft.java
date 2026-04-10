@@ -1,5 +1,6 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.ShootStrategy.ShootPattern;
 import edu.hitsz.ShootStrategy.ShootStrategy;
 import edu.hitsz.ShootStrategy.SingleShootStrategy;
 import edu.hitsz.application.ImageManager;
@@ -26,14 +27,14 @@ public class HeroAircraft extends AbstractAircraft {
     private int direction = -1;
 
     // 发射策略
-    private ShootStrategy shootStrategy;
+    private ShootPattern shootPattern;
 
     // 单一英雄机实例
     private static HeroAircraft HeroAircraftInstance;
 
     private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy) {
         super(locationX, locationY, speedX, speedY, hp);
-        this.shootStrategy = shootStrategy;
+        this.shootPattern = new ShootPattern(shootStrategy);
     }
 
     public static synchronized HeroAircraft getHeroAircraft() {
@@ -57,7 +58,7 @@ public class HeroAircraft extends AbstractAircraft {
      * @return 射击出的子弹List
      */
     public List<BaseBullet> shoot() {
-        return shootStrategy.shoot(this.locationX, this.locationY, this.direction, this.power, this.speedY);
+        return shootPattern.shoot(this.locationX, this.locationY, this.direction, this.power, this.speedY);
     }
 
     public void increaseHp(int increase){

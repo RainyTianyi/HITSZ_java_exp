@@ -1,5 +1,6 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.ShootStrategy.ShootPattern;
 import edu.hitsz.ShootStrategy.ShootStrategy;
 import edu.hitsz.ShootStrategy.SingleShootStrategy;
 import edu.hitsz.application.Main;
@@ -30,7 +31,7 @@ public class EliteEnemy extends EnemyAircraft{
     private final static int direction = 1;
 
     // 子弹射击策略
-    private static final ShootStrategy shootStrategy = new SingleShootStrategy();
+    private static final ShootPattern shootPattern = new ShootPattern(new SingleShootStrategy());
 
     // 精英敌机随机发射道具的概率
     // TODO 改UML图
@@ -51,7 +52,7 @@ public class EliteEnemy extends EnemyAircraft{
 
     @Override
     public List<BaseBullet> shoot() {
-        return shootStrategy.shoot(locationX, locationY, direction, power, speedY);
+        return shootPattern.shoot(locationX, locationY, direction, power, speedY);
     }
 
     @Override
