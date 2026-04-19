@@ -1,0 +1,44 @@
+package edu.hitsz.aircraft;
+
+import edu.hitsz.application.Main;
+import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.item.BaseItem;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * 普通敌机
+ * 不可射击、不掉落道具
+ * @author hitsz
+ */
+public class MobEnemy extends EnemyAircraft {
+
+    // 普通敌机得分值
+    private static final int scoreValue = 10;
+
+    // 普通敌机发射子弹的间隔
+    private static final int shootCycle = 40;
+
+    public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    {
+        super(locationX, locationY, speedX, speedY, hp, scoreValue, shootCycle);
+    }
+
+    @Override
+    public void forward() {
+        super.forward();
+        // 判定 y 轴向下飞行出界
+        if (locationY >= Main.WINDOW_HEIGHT ) {
+            vanish();
+        }
+    }
+
+    @Override
+    public List<BaseBullet> shoot() {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public List<BaseItem> generateItem() { return new LinkedList<>(); }
+}

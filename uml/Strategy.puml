@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' 上下文单元
+class ShootPattern {
+    + shootStrategy : ShootStrategy
+    + ShootPattern()
+    + setStrategy(ShootStrategy strategy) : void
+    + shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+ShootPattern o--> ShootStrategy
+
+' 策略接口
+interface ShootStrategy {
+    shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+class SingleShootStrategy implements ShootStrategy {
+    shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+class DoubleShootStrategy implements ShootStrategy {
+    shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+class ScatterShootStrategy implements ShootStrategy {
+    shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+class CircleShootStrategy implements ShootStrategy {
+    shoot(int x, int y, int direction, int power, int aircraftSpeedY) : List<BaseBullet>
+}
+
+@enduml
