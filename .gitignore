@@ -1,0 +1,35 @@
+# 编译输出目录（IDE 默认输出路径）
+/out/
+/target/
+
+# IntelliJ IDEA 相关配置
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# 项目依赖（如果你不使用 Maven/Gradle 管理，而是手动把 jar 放在 lib/ 下，则不要忽略 lib/）
+# 这里默认忽略 lib/ 下的 jar 文件，避免提交大文件；如果确实需要提交依赖，注释或删除下面两行
+/lib/*.jar
+/lib/*.zip
+
+# 日志文件
+*.log
+
+# 操作系统生成的文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.swp
+*.class
+*.ctxt
+
+# 打包输出
+*.jar
+*.war
+*.ear
+
+# 本地配置文件（可能包含敏感信息）
+application-local.properties
