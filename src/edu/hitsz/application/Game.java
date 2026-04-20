@@ -1,5 +1,8 @@
 package edu.hitsz.application;
 
+import edu.hitsz.DAO.DaoImpl;
+import edu.hitsz.DAO.PlayerScore;
+import edu.hitsz.DAO.PlayerScoreDAO;
 import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
@@ -9,6 +12,7 @@ import edu.hitsz.item.BaseItem;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -49,6 +53,9 @@ public class Game extends JPanel {
 
     //当前玩家分数
     private int score = 0;
+
+    //排行榜数据库
+    private final DaoImpl playerScores = new DaoImpl();
 
     //游戏结束标志
     private boolean gameOverFlag = false;
@@ -267,11 +274,19 @@ public class Game extends JPanel {
             timer.cancel(); // 取消定时器并终止所有调度任务
             gameOverFlag = true;
             System.out.println("Game Over!");
+
+            // 将得分写入数据库
+            String PlayerName = "hitsz";
+            // 获取当前时间
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            playerScores.update(new PlayerScore(PlayerName, score, time));
+
+            // 暂时将得分排行榜放在结束后直接打印，先获取当前分数数据库再逐个打印
+            System.out.println("Scores: ");
+            for (PlayerScore ps : playerScores.getPSList()) {
+                System.out.println(ps.getPlayerName() + " " + ps.getScore() + " " + ps.getTime());
+            }
         }
-        // 将得分写入数据库
-
-        // 暂时将得分排行榜放在结束后，直接打印
-
     }
 
     //***********************
