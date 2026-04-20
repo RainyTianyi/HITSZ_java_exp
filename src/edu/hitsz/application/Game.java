@@ -105,11 +105,20 @@ public class Game extends JPanel {
                     }
                 }
 
-                // 积分每到达1000分，生成Boss敌机
+                // 积分每到达1000分且当前不存在Boss敌机时，生成Boss敌机
                 if (bossSpawnScore >= 500) {
-                    EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
-                    enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                    bossSpawnScore = 0;
+                    boolean hasBoss = false;
+                    for (EnemyAircraft enemy : enemyAircrafts) {
+                        if (enemy instanceof BossEnemy) {
+                            hasBoss = true;
+                            break;
+                        }
+                    }
+                    if (!hasBoss) {
+                        EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
+                        enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                        bossSpawnScore = 0;
+                    }
                 }
 
                 // 飞机发射子弹
@@ -259,6 +268,10 @@ public class Game extends JPanel {
             gameOverFlag = true;
             System.out.println("Game Over!");
         }
+        // 将得分写入数据库
+
+        // 暂时将得分排行榜放在结束后，直接打印
+
     }
 
     //***********************
