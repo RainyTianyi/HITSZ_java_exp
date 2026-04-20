@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface PlayerScoreDAO
+{
+    + getAll(): List<PlayerScore>
+    + update(PlayerScore ps): void
+    + delete(PlayerScore ps):void
+}
+
+class DaoImpl
+{
+    - PSList: List<PlayerScore>
+
+    + DaoImpl():void
+    + getAll(): List<PlayerScore>
+    + update(PlayerScore ps): void
+    + delete(PlayerScore ps):void
+}
+
+class PlayerScore
+{
+    - PlayerName: String
+    - Score: int
+    - Time: String
+
+    + PlayerScore(): void
+    + getPlayerName(): String
+    + setPlayerName(String name): void
+    + getScore(): int
+    + setScore(int score): void
+    + getTime(): String
+    + setTime(string name): void
+}
+
+PlayerScoreDAO <|.. DaoImpl
+DaoImpl --> PlayerScore
+
+@enduml
