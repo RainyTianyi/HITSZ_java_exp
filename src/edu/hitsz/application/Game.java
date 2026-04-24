@@ -2,7 +2,6 @@ package edu.hitsz.application;
 
 import edu.hitsz.DAO.DaoImpl;
 import edu.hitsz.DAO.PlayerScore;
-import edu.hitsz.DAO.PlayerScoreDAO;
 import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
@@ -162,7 +161,6 @@ public class Game extends JPanel {
             //英雄机射击
             heroBullets.addAll(heroAircraft.shoot());
             //敌机射击
-            // TODO 当前版本未实现不同敌机发射子弹的时间差异
             for (EnemyAircraft enemyAircraft : enemyAircrafts) {
                 enemyBullets.addAll(enemyAircraft.shoot());
             }
@@ -275,17 +273,33 @@ public class Game extends JPanel {
             gameOverFlag = true;
             System.out.println("Game Over!");
 
-            // 将得分写入数据库
-            String PlayerName = "hitsz";
-            // 获取当前时间
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            playerScores.update(new PlayerScore(PlayerName, score, time));
+            // 在事件调度线程中显示输入对话框并保存数据
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    // 弹出窗口提示用户输入 PlayerName
+                    String playerName = "Player"; // 默认名称
 
-            // 暂时将得分排行榜放在结束后直接打印，先获取当前分数数据库再逐个打印
-            System.out.println("Scores: ");
-            for (PlayerScore ps : playerScores.getPSList()) {
-                System.out.println(ps.getPlayerName() + " " + ps.getScore() + " " + ps.getTime());
-            }
+                    String input = JOptionPane.showInputDialog(
+                            null,
+                            "游戏结束！\n您的得分: " + score + "\n请输入您的名字:",
+                            "游戏结束",
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+
+                    // 如果用户输入了名字，使用输入的名字；否则使用默认名
+                    if (input != null && !input.trim().isEmpty()) {
+                        playerName = input.trim();
+                    }
+
+                    // 获取当前时间
+                    String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    playerScores.update(new PlayerScore(playerName, score, time));
+
+                    // 游戏结束后打开排行榜界面
+                    Main.getGammingMode().switchToRankingList();
+                }
+            });
         }
     }
 

@@ -1,5 +1,7 @@
 package edu.hitsz.DAO;
 
+import java.util.Objects;
+
 public class PlayerScore {
     private String PlayerName;
     private int Score;
@@ -34,5 +36,20 @@ public class PlayerScore {
     public void setTime(String Time)
     {
         this.Time = Time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerScore that = (PlayerScore) o;
+        return Score == that.Score &&
+                Objects.equals(PlayerName, that.PlayerName) &&
+                Objects.equals(Time, that.Time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(PlayerName, Score, Time);
     }
 }
