@@ -1,6 +1,7 @@
 package edu.hitsz.GUI;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,33 +11,38 @@ public class StartMenu {
     private JButton Normal;
     private JButton Hard;
 
-    public StartMenu() {
+    private GammingMode gammingMode;
+
+    public StartMenu(GammingMode gammingMode) {
+        this.gammingMode = gammingMode;
+
         Simple.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO 切换为简单模式
-
+                // 切换到游戏界面（所有难度暂时相同）
+                gammingMode.switchToGame();
             }
         });
 
         Normal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO 切换为普通模式
-
+                // 切换到游戏界面（所有难度暂时相同）
+                gammingMode.switchToGame();
             }
         });
 
         Hard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO 切换为困难模式
-
+                // 切换到游戏界面（所有难度暂时相同）
+                gammingMode.switchToGame();
             }
         });
     }
 
-    public JPanel getMainPanel() {
+    public JPanel getStartPanel() {
         return StartPanel;
     }
+
 }

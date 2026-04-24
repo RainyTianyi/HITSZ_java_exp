@@ -28,6 +28,8 @@ public class DaoImpl {
     public void update(PlayerScore ps)
     {
         this.PSList.add(ps);
+        // 对数据库数据按照分数大小进行排序（从高到低）
+        this.PSList.sort((PlayerScore a, PlayerScore b) -> b.getScore() - a.getScore());
         // 将数据库数据写入文件
         write();
     }

@@ -5,6 +5,7 @@ import edu.hitsz.DAO.PlayerScore;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,14 +20,18 @@ public class RankingList {
     private TableModel tableModel = new TableModel();
     private DefaultTableModel model;
 
-    public RankingList() {
+    private GammingMode gammingMode;
+
+    public RankingList(GammingMode gammingMode) {
+        this.gammingMode = gammingMode;
+
         initializeTable();
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO 返回主菜单
-
+                // 返回开始菜单
+                gammingMode.switchToStartMenu();
             }
         });
 
@@ -52,8 +57,17 @@ public class RankingList {
                         PlayerScore ps = new PlayerScore(playerName, score, time);
                         dao.delete(ps);
 
-                        // 重新初始化表格以反映最新数据
-                        initializeTable();
+                        // 重新加载数据
+                        tableModel.reload();
+
+                        // 清空现有模型的所有行
+                        model.setRowCount(0);
+
+                        // 添加新数据
+                        Object[][] newData = tableModel.getRowData();
+                        for (Object[] rowData : newData) {
+                            model.addRow(rowData);
+                        }
 
                         JOptionPane.showMessageDialog(deleteButton, "删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);
                     } catch (Exception ex) {
@@ -89,11 +103,24 @@ public class RankingList {
         tableScrollPanel.setViewportView(RankingTable);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("RankingList");
-        frame.setContentPane(new RankingList().RankPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    /**
+     * 刷新数据（公开方法，供外部调用）
+     */
+    public void refreshData() {
+        tableModel.reload();
+
+        // 清空现有模型的所有行
+        model.setRowCount(0);
+
+        // 添加新数据
+        Object[][] newData = tableModel.getRowData();
+        for (Object[] rowData : newData) {
+            model.addRow(rowData);
+        }
     }
+
+    public JPanel getRankPanel() {
+        return RankPanel;
+    }
+
 }

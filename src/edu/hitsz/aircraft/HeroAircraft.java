@@ -41,6 +41,13 @@ public class HeroAircraft extends AbstractAircraft {
         return HeroAircraftInstance;
     }
 
+    /**
+     * 重置英雄机实例（用于重新开始游戏）
+     */
+    public static synchronized void resetHeroAircraft() {
+        HeroAircraftInstance = null;
+    }
+
     @Override
     public void forward() {
         // 英雄机由鼠标控制，不通过forward函数移动
