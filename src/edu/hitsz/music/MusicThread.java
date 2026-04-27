@@ -18,29 +18,29 @@ import javax.sound.sampled.DataLine.Info;
 public class MusicThread extends Thread {
 
 
-    //音频文件名
     private String filename;
     private AudioFormat audioFormat;
     private byte[] samples;
 
+    private volatile boolean isPlaying = false;
+    private volatile boolean loop = false;
+    private SourceDataLine dataLine = null;
+
     public MusicThread(String filename) {
-        //初始化filename
         this.filename = filename;
         reverseMusic();
     }
 
     public void reverseMusic() {
         try {
-            //定义一个AudioInputStream用于接收输入的音频数据，使用AudioSystem来获取音频的音频输入流
             AudioInputStream stream = AudioSystem.getAudioInputStream(new File(filename));
-            //用AudioFormat来获取AudioInputStream的格式
             audioFormat = stream.getFormat();
             samples = getSamples(stream);
         } catch (UnsupportedAudioFileException e) {
-            // TODO Auto-generated catch block
+            System.err.println("不支持的音频文件格式: " + filename);
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.err.println("读取音频文件失败: " + filename);
             e.printStackTrace();
         }
     }
@@ -52,7 +52,7 @@ public class MusicThread extends Thread {
         try {
             dataInputStream.readFully(samples);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.err.println("读取音频数据失败");
             e.printStackTrace();
         }
         return samples;
@@ -61,37 +61,39 @@ public class MusicThread extends Thread {
     public void play(InputStream source) {
         int size = (int) (audioFormat.getFrameSize() * audioFormat.getSampleRate());
         byte[] buffer = new byte[size];
-        //源数据行SoureDataLine是可以写入数据的数据行
-        SourceDataLine dataLine = null;
-        //获取受数据行支持的音频格式DataLine.info
+        dataLine = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
         try {
             dataLine = (SourceDataLine) AudioSystem.getLine(info);
             dataLine.open(audioFormat, size);
         } catch (LineUnavailableException e) {
-            // TODO Auto-generated catch block
+            System.err.println("无法获取音频行");
             e.printStackTrace();
+            return;
         }
-        dataLine.start();
-        try {
-            int numBytesRead = 0;
-            while (numBytesRead != -1) {
-				//从音频流读取指定的最大数量的数据字节，并将其放入缓冲区中
-                numBytesRead =
-                        source.read(buffer, 0, buffer.length);
-				//通过此源数据行将数据写入混频器
-                if (numBytesRead != -1) {
-                    dataLine.write(buffer, 0, numBytesRead);
-                }
-            }
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        isPlaying = true;
+        dataLine.start();
+
+        do {
+            try {
+                int numBytesRead = 0;
+                while (numBytesRead != -1 && isPlaying) {
+                    numBytesRead = source.read(buffer, 0, buffer.length);
+                    if (numBytesRead != -1 && isPlaying) {
+                        dataLine.write(buffer, 0, numBytesRead);
+                    }
+                }
+            } catch (IOException ex) {
+                System.err.println("播放音频时发生错误");
+                ex.printStackTrace();
+            }
+        } while (loop && isPlaying);
 
         dataLine.drain();
         dataLine.close();
-
+        dataLine = null;
+        isPlaying = false;
     }
 
     @Override
@@ -99,6 +101,23 @@ public class MusicThread extends Thread {
         InputStream stream = new ByteArrayInputStream(samples);
         play(stream);
     }
+
+    public void stopPlaying() {
+        isPlaying = false;
+        if (dataLine != null) {
+            dataLine.stop();
+        }
+    }
+
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public boolean isLoop() {
+        return loop;
+    }
 }
-
-

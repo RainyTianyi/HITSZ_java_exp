@@ -7,6 +7,9 @@ import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.item.BaseItem;
+import edu.hitsz.item.BombItem;
+import edu.hitsz.music.MusicController;
+import edu.hitsz.music.MusicType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,6 +62,10 @@ public class Game extends JPanel {
     //游戏结束标志
     private boolean gameOverFlag = false;
 
+    //音频管理
+    private MusicController musicController = new MusicController();
+
+
     public Game() {
         heroAircraft = HeroAircraft.getHeroAircraft();
 
@@ -78,6 +85,9 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+
+        musicController.playBgm();
+        musicController.enableBgmLoop(true);
 
         // 定时任务：绘制、对象产生、碰撞判定、及结束判定
         TimerTask task = new TimerTask() {
@@ -124,9 +134,13 @@ public class Game extends JPanel {
                         EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
                         enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                         bossSpawnScore = 0;
+                        musicController.playBossBgm();
+                        musicController.enableBgmLoop(true);
                     }
                 }
 
+                // 检查Boss敌机是否死亡
+                checkBossDeath();
                 // 飞机发射子弹
                 shootAction();
                 // 子弹移动
@@ -154,6 +168,21 @@ public class Game extends JPanel {
     //      Action 各部分
     //***********************
 
+    private void checkBossDeath() {
+        boolean hasBoss = false;
+        for (EnemyAircraft enemy : enemyAircrafts) {
+            if (enemy instanceof BossEnemy) {
+                hasBoss = true;
+                break;
+            }
+        }
+
+        if (!hasBoss && musicController.isPlaying(MusicType.BGM_BOSS)) {
+            musicController.stopMusic(MusicType.BGM_BOSS);
+            musicController.playBgm();
+            musicController.enableBgmLoop(true);
+        }
+    }
     private void shootAction() {
         shootCounter++;
         if (shootCounter >= shootCycle) {
@@ -205,6 +234,7 @@ public class Game extends JPanel {
                 // 敌机撞击到英雄机
                 // 英雄机损失一定生命值
                 heroAircraft.decreaseHp(bullet.getPower());
+                musicController.playSoundEffect(MusicType.BULLET_HIT);
                 bullet.vanish();
             }
         }
@@ -245,6 +275,12 @@ public class Game extends JPanel {
             }
             if (item.crash(heroAircraft)) {
                 item.activate();
+                musicController.playSoundEffect(MusicType.GET_SUPPLY);
+
+                // 如果是bomb道具生效，播放爆炸音效
+                if (item instanceof BombItem) {
+                    musicController.playSoundEffect(MusicType.BOMB_EXPLOSION);
+                }
                 item.vanish();
             }
         }
@@ -272,6 +308,9 @@ public class Game extends JPanel {
             timer.cancel(); // 取消定时器并终止所有调度任务
             gameOverFlag = true;
             System.out.println("Game Over!");
+
+            musicController.stopAllMusic();
+            musicController.playSoundEffect(MusicType.GAME_OVER);
 
             // 在事件调度线程中显示输入对话框并保存数据
             SwingUtilities.invokeLater(new Runnable() {
