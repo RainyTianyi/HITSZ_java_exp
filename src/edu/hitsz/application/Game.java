@@ -65,8 +65,14 @@ public class Game extends JPanel {
     //音频管理
     private MusicController musicController = new MusicController();
 
+    private String difficulty;
 
-    public Game() {
+
+    public Game(String difficulty) {
+        this.difficulty = difficulty;
+
+        ImageManager.setBackgroundByDifficulty(difficulty);
+
         heroAircraft = HeroAircraft.getHeroAircraft();
 
         enemyAircrafts = new LinkedList<>();
@@ -354,8 +360,9 @@ public class Game extends JPanel {
         super.paint(g);
 
         // 绘制背景,图片滚动
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop, null);
+        BufferedImage currentBg = ImageManager.getCurrentBackgroundImage();
+        g.drawImage(currentBg, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
+        g.drawImage(currentBg, 0, this.backGroundTop, null);
         this.backGroundTop += 1;
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
