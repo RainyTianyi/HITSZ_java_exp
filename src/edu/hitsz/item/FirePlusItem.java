@@ -12,14 +12,30 @@ public class FirePlusItem extends BaseItem{
 
     @Override
     public void activate() {
-        HeroAircraft.getHeroAircraft().shootPattern.setShootStrategy(new CircleShootStrategy());
-        System.out.println("FirePlusItem active!");
+        HeroAircraft hero = HeroAircraft.getHeroAircraft();
+
+        Thread restoreThread = new Thread(() -> {
+            try {
+                Thread.sleep(duration);
+                if (!Thread.currentThread().isInterrupted()) {
+                    hero.shootPattern.restoreOriginalStrategy();
+                    System.out.println("FirePlusItem effect expired, restored original strategy!");
+                }
+            } catch (InterruptedException e) {
+                System.out.println("FirePlusItem effect interrupted by new item");
+            }
+        });
+        restoreThread.setDaemon(true);
+
+        hero.shootPattern.setTemporaryStrategy(new CircleShootStrategy(), restoreThread);
+        restoreThread.start();
+
+        System.out.println("FirePlusItem active! Duration: " + duration + "ms");
     }
 
     @Override
     public void forward() {
         super.forward();
-        // 判定 y 轴向下飞行出界
         if (locationY >= Main.WINDOW_HEIGHT ) {
             vanish();
         }

@@ -13,20 +13,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 综合管理图片的加载，访问
- * 提供图片的静态访问方法
- * @author hitsz
- */
 public class ImageManager {
 
-    /**
-     * 类名-图片 映射，存储各基类的图片 <br>
-     * 可使用 CLASSNAME_IMAGE_MAP.get( obj.getClass().getName() ) 获得 obj 所属基类对应的图片
-     */
     private static final Map<String, BufferedImage> CLASSNAME_IMAGE_MAP = new HashMap<>();
 
     public static BufferedImage BACKGROUND_IMAGE;
+    public static BufferedImage BACKGROUND_IMAGE_2;
+    public static BufferedImage BACKGROUND_IMAGE_3;
+    public static BufferedImage BACKGROUND_IMAGE_4;
+    public static BufferedImage BACKGROUND_IMAGE_5;
 
     public static BufferedImage HERO_IMAGE;
 
@@ -45,27 +40,28 @@ public class ImageManager {
     public static BufferedImage BOMB_ITEM_IMAGE;
     public static BufferedImage ICE_ITEM_IMAGE;
 
+    private static BufferedImage currentBackgroundImage;
+
 
     static {
         try {
-            // 加载背景图片
             BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            BACKGROUND_IMAGE_2 = ImageIO.read(new FileInputStream("src/images/bg2.jpg"));
+            BACKGROUND_IMAGE_3 = ImageIO.read(new FileInputStream("src/images/bg3.jpg"));
+            BACKGROUND_IMAGE_4 = ImageIO.read(new FileInputStream("src/images/bg4.jpg"));
+            BACKGROUND_IMAGE_5 = ImageIO.read(new FileInputStream("src/images/bg5.jpg"));
 
-            // 加载英雄机图片
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
 
-            // 加载子弹图片
             HERO_BULLET_IMAGE = ImageIO.read(new FileInputStream("src/images/bullet_hero.png"));
             ENEMY_BULLET_IMAGE = ImageIO.read(new FileInputStream("src/images/bullet_enemy.png"));
 
-            // 加载敌机图片
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
             ELITE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elite.png"));
             CRACK_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePlus.png"));
             ACE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePro.png"));
             BOSS_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/boss.png"));
 
-            // 加载道具图片
             BLOOD_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_blood.png"));
             FIRE_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bullet.png"));
             FIRE_PLUS_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bulletPlus.png"));
@@ -89,11 +85,29 @@ public class ImageManager {
             CLASSNAME_IMAGE_MAP.put(BombItem.class.getName(), BOMB_ITEM_IMAGE);
             CLASSNAME_IMAGE_MAP.put(IceItem.class.getName(), ICE_ITEM_IMAGE);
 
+            currentBackgroundImage = BACKGROUND_IMAGE;
+
 
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    public static void setBackgroundByDifficulty(String difficulty) {
+        if ("simple".equalsIgnoreCase(difficulty)) {
+            currentBackgroundImage = BACKGROUND_IMAGE;
+        } else if ("normal".equalsIgnoreCase(difficulty)) {
+            currentBackgroundImage = BACKGROUND_IMAGE_2;
+        } else if ("hard".equalsIgnoreCase(difficulty)) {
+            currentBackgroundImage = BACKGROUND_IMAGE_3;
+        } else {
+            currentBackgroundImage = BACKGROUND_IMAGE;
+        }
+    }
+
+    public static BufferedImage getCurrentBackgroundImage() {
+        return currentBackgroundImage;
     }
 
     public static BufferedImage get(String className){

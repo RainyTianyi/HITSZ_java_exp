@@ -6,11 +6,26 @@ import java.util.List;
 
 public class DaoImpl {
     private List<PlayerScore> PSList;
-    private static final String DATA_FILE = "out/production/AircraftWar-base/data/player_score.txt";
+    private String dataFile;
 
-    public DaoImpl()
-    {
+    public DaoImpl(String difficulty) {
         this.PSList = new ArrayList<PlayerScore>();
+
+        switch (difficulty.toLowerCase()) {
+            case "simple":
+                this.dataFile = "out/production/AircraftWar-base/data/player_score_simple.txt";
+                break;
+            case "normal":
+                this.dataFile = "out/production/AircraftWar-base/data/player_score_normal.txt";
+                break;
+            case "hard":
+                this.dataFile = "out/production/AircraftWar-base/data/player_score_hard.txt";
+                break;
+            default:
+                this.dataFile = "out/production/AircraftWar-base/data/player_score_simple.txt";
+                break;
+        }
+
         read();
     }
 
@@ -44,7 +59,12 @@ public class DaoImpl {
     // 从文件中读取数据
     private void read()
     {
-        File file = new File(DATA_FILE);
+        File parentDir = new File(dataFile).getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        File file = new File(dataFile);
         if (!file.exists()) {
             return;
         }
@@ -75,7 +95,7 @@ public class DaoImpl {
     private void write()
     {
         try {
-            File file = new File(DATA_FILE);
+            File file = new File(dataFile);
             File parentDir = file.getParentFile();
             if (parentDir != null && !parentDir.exists()) {
                 parentDir.mkdirs();
