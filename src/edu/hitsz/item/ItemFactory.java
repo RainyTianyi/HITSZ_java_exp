@@ -33,11 +33,11 @@ public class ItemFactory {
                 item = new BloodItem(locationX, locationY, speedX, speedY, value);
                 break;
             case TYPE_FIRE:
-                duration = 50;  // 持续时间
+                duration = 5000;  // 持续时间
                 item = new FireItem(locationX, locationY, speedX, speedY, duration);
                 break;
             case TYPE_FIRE_PLUS:
-                duration = 100; // 持续时间
+                duration = 10000; // 持续时间
                 item = new FirePlusItem(locationX, locationY, speedX, speedY, duration);
                 break;
             case TYPE_BOMB:
