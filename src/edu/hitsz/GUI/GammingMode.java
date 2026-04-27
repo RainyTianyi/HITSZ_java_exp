@@ -61,7 +61,7 @@ public class GammingMode {
         }
     }
 
-    public void switchToRankingList() {
+    public void switchToRankingList(String difficulty) {
         if (mainFrame != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -71,6 +71,7 @@ public class GammingMode {
                     mainFrame.getContentPane().add(cardPanel);
 
                     if (rankingList != null) {
+                        rankingList.setDifficulty(difficulty);
                         rankingList.refreshData();
                     }
 

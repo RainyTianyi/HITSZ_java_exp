@@ -57,7 +57,7 @@ public class Game extends JPanel {
     private int score = 0;
 
     //排行榜数据库
-    private final DaoImpl playerScores = new DaoImpl();
+    private final DaoImpl playerScores;
 
     //游戏结束标志
     private boolean gameOverFlag = false;
@@ -72,6 +72,8 @@ public class Game extends JPanel {
         this.difficulty = difficulty;
 
         ImageManager.setBackgroundByDifficulty(difficulty);
+
+        this.playerScores = new DaoImpl(difficulty);
 
         heroAircraft = HeroAircraft.getHeroAircraft();
 
@@ -342,7 +344,7 @@ public class Game extends JPanel {
                     playerScores.update(new PlayerScore(playerName, score, time));
 
                     // 游戏结束后打开排行榜界面
-                    Main.getGammingMode().switchToRankingList();
+                    Main.getGammingMode().switchToRankingList(difficulty);
                 }
             });
         }
