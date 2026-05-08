@@ -200,7 +200,7 @@ public abstract class AbstractAction {
      */
     protected void updateDifficultyFactor() {
         // 基础难度系数为1.0，每次Boss生成增加0.1
-        this.difficultyFactor = 1.0 + (bossSpawnCount * 0.1);
+        this.difficultyFactor = 1.0 + (bossSpawnCount * 0.5);
         // 限制最大难度系数为3.0
         if (this.difficultyFactor > 3.0) {
             this.difficultyFactor = 3.0;
