@@ -124,6 +124,11 @@ public abstract class AbstractAction {
     protected abstract void initParameters();
 
     /**
+     * 敌机生成逻辑，由子类实现不同难度的生成概率
+     */
+    protected abstract void EnemySpawnAction();
+
+    /**
      * 游戏主逻辑入口
      */
     public void action() {
@@ -173,30 +178,6 @@ public abstract class AbstractAction {
     //***********************
     //      Action 各部分
     //***********************
-
-    protected void EnemySpawnAction() {
-        EnemyAircraftFactory enemyAircraftFactory;
-        // 随机产生除BossEnemy之外的其他Enemy
-        int type = (int) (Math.random() * 100);
-        if (enemyAircrafts.size() < enemyMaxNumber) {
-            if (type < 40) {
-                enemyAircraftFactory = new MobEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-            }
-            else if (type < 70){
-                enemyAircraftFactory = new EliteEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-            }
-            else if (type < 90){
-                enemyAircraftFactory = new CrackEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-            }
-            else{
-                enemyAircraftFactory = new AceEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-            }
-        }
-    }
 
     protected void BossSpawnAction() {
         if (bossSpawnScore >= bossSpawnTriggerScore) {

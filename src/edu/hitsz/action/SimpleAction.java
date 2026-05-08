@@ -1,6 +1,7 @@
 package edu.hitsz.action;
 
 import edu.hitsz.DAO.DaoImpl;
+import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.item.BaseItem;
@@ -32,5 +33,34 @@ public class SimpleAction extends AbstractAction {
         this.heroShootCycle = 20;          // 英雄机射击周期适中
         this.enemyShootCycle = 30;         // 敌机射击周期较长（射击频率较低）
         this.bossSpawnTriggerScore = 600;  // Boss出现所需分数较高
+    }
+
+    @Override
+    protected void EnemySpawnAction() {
+        EnemyAircraftFactory enemyAircraftFactory;
+        // 简单难度：更多普通敌机，更少精英敌机
+        int type = (int) (Math.random() * 100);
+        if (enemyAircrafts.size() < enemyMaxNumber) {
+            if (type < 60) {
+                // 60% 概率生成普通敌机
+                enemyAircraftFactory = new MobEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else if (type < 80){
+                // 20% 概率生成精英敌机
+                enemyAircraftFactory = new EliteEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else if (type < 95){
+                // 15% 概率生成Crack敌机
+                enemyAircraftFactory = new CrackEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else{
+                // 5% 概率生成Ace敌机
+                enemyAircraftFactory = new AceEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+        }
     }
 }
