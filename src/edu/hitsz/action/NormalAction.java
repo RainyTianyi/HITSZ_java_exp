@@ -29,7 +29,8 @@ public class NormalAction extends AbstractAction {
         // 普通难度参数设置（保持原有游戏逻辑）
         this.enemyMaxNumber = 5;           // 敌机最大数量适中
         this.enemySpawnCycle = 20;         // 敌机生成周期适中
-        this.shootCycle = 20;              // 射击周期适中
+        this.heroShootCycle = 20;          // 英雄机射击周期适中
+        this.enemyShootCycle = 20;         // 敌机射击周期适中
         this.bossSpawnTriggerScore = 500;  // Boss出现所需分数适中
     }
 }

@@ -29,7 +29,8 @@ public class HardAction extends AbstractAction {
         // 困难难度参数设置
         this.enemyMaxNumber = 7;           // 敌机最大数量较多
         this.enemySpawnCycle = 15;         // 敌机生成周期较短（生成较快）
-        this.shootCycle = 15;              // 射击周期较短（射击频率较高）
+        this.heroShootCycle = 20;          // 英雄机射击周期适中
+        this.enemyShootCycle = 12;         // 敌机射击周期较短（射击频率较高）
         this.bossSpawnTriggerScore = 400;  // Boss出现所需分数较低
     }
 }

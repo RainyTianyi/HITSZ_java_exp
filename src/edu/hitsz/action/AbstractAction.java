@@ -41,9 +41,13 @@ public abstract class AbstractAction {
     protected int bossSpawnTriggerScore;
     protected int bossSpawnScore;
 
-    //英雄机和敌机射击周期
-    protected double shootCycle;
-    protected int shootCounter;
+    //英雄机射击周期
+    protected double heroShootCycle;
+    protected int heroShootCounter;
+
+    //敌机射击周期
+    protected double enemyShootCycle;
+    protected int enemyShootCounter;
 
     //游戏对象列表
     protected HeroAircraft heroAircraft;
@@ -96,7 +100,8 @@ public abstract class AbstractAction {
         this.score = 0;
         this.gameOverFlag = false;
         this.enemySpawnCounter = 0;
-        this.shootCounter = 0;
+        this.heroShootCounter = 0;
+        this.enemyShootCounter = 0;
         this.bossSpawnScore = 0;
 
         // 初始化观察者
@@ -179,7 +184,6 @@ public abstract class AbstractAction {
                 enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
             }
             else if (type < 70){
-                // 随机产生精英敌机的横向速度，在[-10, 10]之间
                 enemyAircraftFactory = new EliteEnemyFactory();
                 enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
             }
@@ -230,12 +234,17 @@ public abstract class AbstractAction {
     }
 
     protected void shootAction() {
-        shootCounter++;
-        if (shootCounter >= shootCycle) {
-            shootCounter = 0;
-            //英雄机射击
+        // 英雄机射击
+        heroShootCounter++;
+        if (heroShootCounter >= heroShootCycle) {
+            heroShootCounter = 0;
             heroBullets.addAll(heroAircraft.shoot());
-            //敌机射击
+        }
+
+        // 敌机射击
+        enemyShootCounter++;
+        if (enemyShootCounter >= enemyShootCycle) {
+            enemyShootCounter = 0;
             for (EnemyAircraft enemyAircraft : enemyAircrafts) {
                 enemyBullets.addAll(enemyAircraft.shoot());
             }

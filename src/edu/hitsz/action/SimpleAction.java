@@ -29,7 +29,8 @@ public class SimpleAction extends AbstractAction {
         // 简单难度参数设置
         this.enemyMaxNumber = 3;           // 敌机最大数量较少
         this.enemySpawnCycle = 30;         // 敌机生成周期较长（生成较慢）
-        this.shootCycle = 25;              // 射击周期较长（射击频率较低）
+        this.heroShootCycle = 20;          // 英雄机射击周期适中
+        this.enemyShootCycle = 30;         // 敌机射击周期较长（射击频率较低）
         this.bossSpawnTriggerScore = 600;  // Boss出现所需分数较高
     }
 }
