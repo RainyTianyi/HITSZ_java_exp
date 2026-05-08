@@ -79,6 +79,12 @@ public abstract class AbstractAction {
     // Game面板引用，用于重绘
     protected JPanel gamePanel;
 
+    // 记录生成Boss的次数，用于衡量游戏时间
+    protected int bossSpawnCount = 0;
+
+    // 当前难度系数（1.0为基准）
+    protected double difficultyFactor = 1.0;
+
     /**
      * 构造函数，初始化基本参数
      */
@@ -127,6 +133,16 @@ public abstract class AbstractAction {
      * 敌机生成逻辑，由子类实现不同难度的生成概率
      */
     protected abstract void EnemySpawnAction();
+
+    /**
+     * Boss生成逻辑，由子类实现不同难度的Boss生成策略
+     */
+    protected abstract void BossSpawnAction();
+
+    /**
+     * 更新射击周期，由子类实现不同难度的射击周期调整策略
+     */
+    protected abstract void updateShootCycles();
 
     /**
      * 游戏主逻辑入口
@@ -179,22 +195,16 @@ public abstract class AbstractAction {
     //      Action 各部分
     //***********************
 
-    protected void BossSpawnAction() {
-        if (bossSpawnScore >= bossSpawnTriggerScore) {
-            boolean hasBoss = false;
-            for (EnemyAircraft enemy : enemyAircrafts) {
-                if (enemy instanceof BossEnemy) {
-                    hasBoss = true;
-                    break;
-                }
-            }
-            if (!hasBoss) {
-                EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                bossSpawnScore = 0;
-                musicController.playBossBgm();
-                musicController.enableBgmLoop(true);
-            }
+    /**
+     * 计算当前难度系数
+     * 每生成一次Boss，难度系数增加0.1，最大不超过3.0
+     */
+    protected void updateDifficultyFactor() {
+        // 基础难度系数为1.0，每次Boss生成增加0.1
+        this.difficultyFactor = 1.0 + (bossSpawnCount * 0.1);
+        // 限制最大难度系数为3.0
+        if (this.difficultyFactor > 3.0) {
+            this.difficultyFactor = 3.0;
         }
     }
 

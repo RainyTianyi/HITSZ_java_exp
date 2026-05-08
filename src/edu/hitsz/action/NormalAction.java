@@ -2,6 +2,7 @@ package edu.hitsz.action;
 
 import edu.hitsz.DAO.DaoImpl;
 import edu.hitsz.EnemyFactory.*;
+import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.item.BaseItem;
@@ -44,23 +45,54 @@ public class NormalAction extends AbstractAction {
             if (type < 40) {
                 // 40% 概率生成普通敌机
                 enemyAircraftFactory = new MobEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft(difficultyFactor));
             }
             else if (type < 70){
                 // 30% 概率生成精英敌机
                 enemyAircraftFactory = new EliteEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft(difficultyFactor));
             }
             else if (type < 90){
                 // 20% 概率生成Crack敌机
                 enemyAircraftFactory = new CrackEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft(difficultyFactor));
             }
             else{
                 // 10% 概率生成Ace敌机
                 enemyAircraftFactory = new AceEnemyFactory();
-                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft(difficultyFactor));
             }
         }
+    }
+
+    @Override
+    protected void BossSpawnAction() {
+        if (bossSpawnScore >= bossSpawnTriggerScore) {
+            boolean hasBoss = false;
+            for (EnemyAircraft enemy : enemyAircrafts) {
+                if (enemy instanceof BossEnemy) {
+                    hasBoss = true;
+                    break;
+                }
+            }
+            if (!hasBoss) {
+                EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
+                // 普通难度Boss血量不变化，始终使用基准难度系数1.0
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft(1.0));
+                bossSpawnScore = 0;
+                // 记录Boss生成次数并更新难度（用于敌机速度和血量）
+                bossSpawnCount++;
+                updateDifficultyFactor();
+                System.out.println("Boss spawned! Current difficulty factor: " + difficultyFactor);
+                musicController.playBossBgm();
+                musicController.enableBgmLoop(true);
+            }
+        }
+    }
+
+    @Override
+    protected void updateShootCycles() {
+        // 普通难度：不改变射击周期
+        // 此方法为空实现
     }
 }
