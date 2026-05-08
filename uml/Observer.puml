@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Observer {
+    + {abstract} beBombed() : void
+    + {abstract} beIced() : void
+}
+
+Observer <|.. EnemyAircraft
+Observer <|.. EnemyBullet
+
+abstract class ItemActivate {
+    # observers: List<Observer>
+
+    + registerObserver(observer: Observer) : void
+    + removeObserver(observer: Observer) : void
+    + {abstract} notifyObservers() : void
+}
+
+ItemActivate <|-- BombActivate
+ItemActivate <|-- IceActivate
+ItemActivate o--> Observer
+
+class BombActivate {
+    + notifyObservers() : void
+}
+
+class IceActivate {
+    + notifyObservers() : void
+}
+
+abstract class EnemyAircraft {
+    + {abstract} beBombed() : void
+    + {abstract} beIced() : void
+}
+
+class EnemyBullet {
+    + beBombed() : void
+    + beIced() : void
+}
+
+@enduml

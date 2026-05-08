@@ -41,4 +41,17 @@ public class MobEnemy extends EnemyAircraft {
 
     @Override
     public List<BaseItem> generateItem() { return new LinkedList<>(); }
+
+    @Override
+    public void beBombed() {
+        // 普通敌机被炸弹击中，直接坠毁
+        vanish();
+    }
+
+    @Override
+    public void beIced() {
+        // 普通敌机被冰冻，永久静止
+        speedX = 0;
+        speedY = 0;
+    }
 }

@@ -1,11 +1,23 @@
 package edu.hitsz.item;
 
-public class IceItem extends BaseItem{
+import edu.hitsz.observer.IceActivate;
 
-    public IceItem(int locationX, int locationY, int speedX, int speedY, int duration) {
-        super(locationX, locationY, speedX, speedY, duration, 0);
+public class IceItem extends BaseItem{
+    private IceActivate iceActivate;
+
+    public IceItem(int locationX, int locationY, int speedX, int speedY) {
+        super(locationX, locationY, speedX, speedY, 0, 0);
+    }
+
+    public void setIceActivate(IceActivate iceActivate) {
+        this.iceActivate = iceActivate;
     }
 
     @Override
-    public void activate() { System.out.println("IceItem active!"); }
+    public void activate() {
+        System.out.println("IceItem active!");
+        if (iceActivate != null) {
+            iceActivate.notifyObservers();
+        }
+    }
 }

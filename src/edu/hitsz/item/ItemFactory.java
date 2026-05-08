@@ -41,12 +41,10 @@ public class ItemFactory {
                 item = new FirePlusItem(locationX, locationY, speedX, speedY, duration);
                 break;
             case TYPE_BOMB:
-                value = 100;    // 炸弹伤害
-                item = new BombItem(locationX, locationY, speedX, speedY, value);
+                item = new BombItem(locationX, locationY, speedX, speedY);
                 break;
             case TYPE_ICE:
-                duration = 100; // 持续时间
-                item = new IceItem(locationX, locationY, speedX, speedY, duration);
+                item = new IceItem(locationX, locationY, speedX, speedY);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown item type: " + type);

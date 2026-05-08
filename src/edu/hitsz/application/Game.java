@@ -5,8 +5,15 @@ import edu.hitsz.DAO.PlayerScore;
 import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.item.BaseItem;
+import edu.hitsz.item.BombItem;
+import edu.hitsz.item.IceItem;
+import edu.hitsz.observer.BombActivate;
+import edu.hitsz.observer.IceActivate;
+import edu.hitsz.observer.ItemActivate;
+import edu.hitsz.observer.Observer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,6 +65,11 @@ public class Game extends JPanel {
 
     //游戏结束标志
     private boolean gameOverFlag = false;
+
+    // 观察者模式：炸弹和冰冻道具激活器
+    private ItemActivate bombActivate;
+
+    private ItemActivate iceActivate;
 
     public Game() {
         heroAircraft = HeroAircraft.getHeroAircraft();
@@ -261,6 +273,30 @@ public class Game extends JPanel {
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
         items.removeIf(AbstractFlyingObject::notValid);
+    }
+
+    /**
+     * 更新观察者列表：
+     * 将所有敌机和敌机子弹注册到炸弹和冰冻道具的观察者列表中
+     */
+    private void updateObservers() {
+        // 清空观察者列表
+        bombActivate = new BombActivate();
+        iceActivate = new IceActivate();
+        
+        // 注册所有敌机
+        for (EnemyAircraft enemy : enemyAircrafts) {
+            bombActivate.registerObserver((Observer) enemy);
+            iceActivate.registerObserver((Observer) enemy);
+        }
+        
+        // 注册所有敌机子弹
+        for (BaseBullet bullet : enemyBullets) {
+            if (bullet instanceof EnemyBullet) {
+                bombActivate.registerObserver((Observer) bullet);
+                iceActivate.registerObserver((Observer) bullet);
+            }
+        }
     }
 
     /**
