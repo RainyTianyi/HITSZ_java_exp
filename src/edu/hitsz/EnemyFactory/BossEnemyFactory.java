@@ -14,7 +14,7 @@ public class BossEnemyFactory implements EnemyAircraftFactory {
         int speedX = (int) ((Math.random() * 6 - 3) * difficultyFactor);
         int speedY = 0;
         // Boss血量随难度大幅增加
-        int hp = (int) (200 + 200 * difficultyFactor);
+        int hp = (int) (200 * difficultyFactor);
         return new BossEnemy(locationX, locationY, speedX, speedY, hp);
     }
 }

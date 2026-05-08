@@ -207,6 +207,19 @@ public abstract class AbstractAction {
         }
     }
 
+    /**
+     * 检查当前是否有Boss在场
+     * @return true表示Boss在场，false表示Boss不在场
+     */
+    protected boolean hasBossInField() {
+        for (EnemyAircraft enemy : enemyAircrafts) {
+            if (enemy instanceof BossEnemy) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected void checkBossDeath() {
         boolean hasBoss = false;
         for (EnemyAircraft enemy : enemyAircrafts) {
@@ -216,10 +229,16 @@ public abstract class AbstractAction {
             }
         }
 
-        if (!hasBoss && musicController.isPlaying(MusicType.BGM_BOSS)) {
+        // 如果Boss刚死亡（之前有Boss，现在没有了），重置Boss生成分数
+        if (hasBoss && musicController.isPlaying(MusicType.BGM_BOSS)) {
+            // Boss还在场，标记状态
+        } else if (!hasBoss && musicController.isPlaying(MusicType.BGM_BOSS)) {
+            // Boss刚死亡，停止Boss音乐，播放普通BGM
             musicController.stopMusic(MusicType.BGM_BOSS);
             musicController.playBgm();
             musicController.enableBgmLoop(true);
+            // Boss死亡后，从0开始累计Boss生成分数
+            bossSpawnScore = 0;
         }
     }
 
@@ -337,7 +356,10 @@ public abstract class AbstractAction {
                         if (enemy.notValid()) {
                             // 敌机已被炸弹击毁，加分
                             score += enemy.getScoreValue();
-                            bossSpawnScore += enemy.getScoreValue();
+                            // 只有在Boss不在场时才累计Boss生成分数
+                            if (!hasBossInField()) {
+                                bossSpawnScore += enemy.getScoreValue();
+                            }
                             // 注意：不调用generateItem()，所以不会产生道具
                         }
                     }

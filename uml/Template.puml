@@ -88,7 +88,7 @@ end note
 
 note right of NormalAction
   <b>普通难度:</b>
-  - Boss血量固定(400)
+  - Boss血量固定(200)
   - 敌机生成概率:
     Mob 40%, Elite 30%
     Crack 20%, Ace 10%
@@ -97,7 +97,7 @@ end note
 
 note right of HardAction
   <b>困难难度:</b>
-  - Boss血量递增(400-800)
+  - Boss血量递增(200-600)
   - 敌机生成概率:
     Mob 25%, Elite 35%
     Crack 25%, Ace 15%
