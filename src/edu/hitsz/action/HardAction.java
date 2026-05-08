@@ -85,7 +85,7 @@ public class HardAction extends AbstractAction {
                 updateDifficultyFactor();
                 // 困难难度下更新射击周期
                 updateShootCycles();
-                System.out.println("Boss spawned! Current difficulty factor: " + difficultyFactor);
+                System.out.println("Boss spawned! Current difficulty factor: " + difficultyFactor + ", bossSpawnCount: " + bossSpawnCount);
                 musicController.playBossBgm();
                 musicController.enableBgmLoop(true);
             }

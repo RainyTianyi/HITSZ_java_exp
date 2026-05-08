@@ -160,10 +160,10 @@ public abstract class AbstractAction {
                     EnemySpawnAction();
                 }
 
+                // 先检查Boss敌机是否死亡，重置分数
+                checkBossDeath();
                 // 积分每到达阈值且当前不存在Boss敌机时，生成Boss敌机
                 BossSpawnAction();
-                // 检查Boss敌机是否死亡
-                checkBossDeath();
                 // 飞机发射子弹
                 shootAction();
                 // 子弹移动
@@ -242,6 +242,7 @@ public abstract class AbstractAction {
             musicController.enableBgmLoop(true);
             // Boss死亡后，从0开始累计Boss生成分数
             bossSpawnScore = 0;
+            System.out.println("Boss defeated! Boss spawn score reset to 0");
         }
     }
 
