@@ -329,9 +329,18 @@ public abstract class AbstractAction {
                 item.activate();
                 musicController.playSoundEffect(MusicType.GET_SUPPLY);
 
-                // 如果是bomb道具生效，播放爆炸音效
+                // 如果是bomb道具生效，播放爆炸音效并处理加分
                 if (item instanceof BombItem) {
                     musicController.playSoundEffect(MusicType.BOMB_EXPLOSION);
+                    // 处理被炸弹击毁的敌机：加分但不产生道具
+                    for (EnemyAircraft enemy : bombActivate.getBombedEnemies()) {
+                        if (enemy.notValid()) {
+                            // 敌机已被炸弹击毁，加分
+                            score += enemy.getScoreValue();
+                            bossSpawnScore += enemy.getScoreValue();
+                            // 注意：不调用generateItem()，所以不会产生道具
+                        }
+                    }
                 }
                 item.vanish();
             }
