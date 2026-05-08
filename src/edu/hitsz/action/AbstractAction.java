@@ -362,8 +362,8 @@ public abstract class AbstractAction {
 
         // 注册所有敌机
         for (EnemyAircraft enemy : enemyAircrafts) {
-            bombActivate.registerObserver((Observer) enemy);
-            iceActivate.registerObserver((Observer) enemy);
+            bombActivate.registerObserver(enemy);
+            iceActivate.registerObserver(enemy);
         }
 
         // 注册所有敌机子弹

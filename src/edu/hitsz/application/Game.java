@@ -1,8 +1,6 @@
 package edu.hitsz.application;
 
 import edu.hitsz.DAO.DaoImpl;
-import edu.hitsz.DAO.PlayerScore;
-import edu.hitsz.EnemyFactory.*;
 import edu.hitsz.action.AbstractAction;
 import edu.hitsz.action.HardAction;
 import edu.hitsz.action.NormalAction;
@@ -11,15 +9,12 @@ import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.item.BaseItem;
-import edu.hitsz.music.MusicController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.*;
 
 /**
  * 游戏主面板，游戏启动
@@ -29,31 +24,17 @@ public class Game extends JPanel {
 
     private int backGroundTop = 0;
 
-    //调度器, 用于定时任务调度
-    private final Timer timer;
-    //时间间隔(ms)，控制刷新频率
-    private final int timeInterval = 40;
-
     private final HeroAircraft heroAircraft;
     private final List<EnemyAircraft> enemyAircrafts;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<BaseItem> items;
 
-    //当前玩家分数
-    private int score = 0;
-
     //排行榜数据库
     private final DaoImpl playerScores;
 
     //游戏难度
     private final String difficulty;
-
-    //游戏结束标志
-    private boolean gameOverFlag = false;
-
-    //音频管理
-    private MusicController musicController = new MusicController();
 
     // Action对象，负责执行游戏逻辑
     private AbstractAction action;
@@ -73,8 +54,6 @@ public class Game extends JPanel {
 
         //启动英雄机鼠标监听
         new HeroController(this, heroAircraft);
-
-        this.timer = new Timer("game-action-timer", true);
 
         // 根据难度创建对应的Action对象
         switch (difficulty.toLowerCase()) {
@@ -164,11 +143,7 @@ public class Game extends JPanel {
         g.setColor(Color.RED);
         g.setFont(new Font("SansSerif", Font.BOLD, 22));
         // 从Action对象获取分数
-        if (action != null) {
-            g.drawString("SCORE: " + action.getScore(), x, y);
-        } else {
-            g.drawString("SCORE: " + this.score, x, y);
-        }
+        g.drawString("SCORE: " + action.getScore(), x, y);
         y = y + 20;
         g.drawString("LIFE: " + this.heroAircraft.getHp(), x, y);
     }
