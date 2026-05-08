@@ -2,27 +2,106 @@
 'https://plantuml.com/class-diagram
 
 abstract class AbstractAction {
-    - checkBossDeath() : void
-    - shootAction() : void
-    - bulletsMoveAction() : void
-    - aircraftsMoveAction() : void
-    - itemsMoveAction() : void
-    - crashCheckAction() : void
-    - postProcessAction() : void
-    - updateObservers() : void
-    - checkResultAction() : void
+    # musicController : MusicController
+    # enemyMaxNumber : int
+    # enemySpawnCycle : double
+    # enemySpawnCounter : int
+    # bossSpawnTriggerScore : int
+    # bossSpawnScore : int
+    # heroShootCycle : double
+    # heroShootCounter : int
+    # enemyShootCycle : double
+    # enemyShootCounter : int
+    # heroAircraft : HeroAircraft
+    # enemyAircrafts : List<EnemyAircraft>
+    # heroBullets : List<BaseBullet>
+    # enemyBullets : List<BaseBullet>
+    # items : List<BaseItem>
+    # bombActivate : BombActivate
+    # iceActivate : IceActivate
+    # timer : Timer
+    # timeInterval : int
+    # score : int
+    # playerScores : DaoImpl
+    # difficulty : String
+    # gameOverFlag : boolean
+    # gamePanel : JPanel
+    # bossSpawnCount : int
+    # difficultyFactor : double
+
+    + AbstractAction(String, HeroAircraft, List<EnemyAircraft>, List<BaseBullet>, List<BaseBullet>, List<BaseItem>, DaoImpl, JPanel)
+    # {abstract} initParameters() : void
+    # {abstract} EnemySpawnAction() : void
+    # {abstract} BossSpawnAction() : void
+    # {abstract} updateShootCycles() : void
+    + action() : void
+    # updateDifficultyFactor() : void
+    # checkBossDeath() : void
+    # shootAction() : void
+    # bulletsMoveAction() : void
+    # aircraftsMoveAction() : void
+    # itemsMoveAction() : void
+    # crashCheckAction() : void
+    # postProcessAction() : void
+    # updateObservers() : void
+    # checkResultAction() : void
+    + getScore() : int
+    + isGameOver() : boolean
 }
 
 class SimpleAction {
-
+    + SimpleAction(String, HeroAircraft, List<EnemyAircraft>, List<BaseBullet>, List<BaseBullet>, List<BaseItem>, DaoImpl, JPanel)
+    # initParameters() : void
+    # EnemySpawnAction() : void
+    # BossSpawnAction() : void
+    # updateShootCycles() : void
 }
 
 class NormalAction {
-
+    + NormalAction(String, HeroAircraft, List<EnemyAircraft>, List<BaseBullet>, List<BaseBullet>, List<BaseItem>, DaoImpl, JPanel)
+    # initParameters() : void
+    # EnemySpawnAction() : void
+    # BossSpawnAction() : void
+    # updateShootCycles() : void
 }
 
 class HardAction {
-
+    + HardAction(String, HeroAircraft, List<EnemyAircraft>, List<BaseBullet>, List<BaseBullet>, List<BaseItem>, DaoImpl, JPanel)
+    # initParameters() : void
+    # EnemySpawnAction() : void
+    # BossSpawnAction() : void
+    # updateShootCycles() : void
 }
+
+AbstractAction <|-- SimpleAction
+AbstractAction <|-- NormalAction
+AbstractAction <|-- HardAction
+
+note right of SimpleAction
+  <b>简单难度:</b>
+  - 不生成Boss
+  - 敌机生成概率:
+    Mob 60%, Elite 20%
+    Crack 15%, Ace 5%
+  - 射击周期不变
+end note
+
+note right of NormalAction
+  <b>普通难度:</b>
+  - Boss血量固定(400)
+  - 敌机生成概率:
+    Mob 40%, Elite 30%
+    Crack 20%, Ace 10%
+  - 射击周期不变
+end note
+
+note right of HardAction
+  <b>困难难度:</b>
+  - Boss血量递增(400-800)
+  - 敌机生成概率:
+    Mob 25%, Elite 35%
+    Crack 25%, Ace 15%
+  - 射击周期递减
+end note
 
 @enduml
