@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ItemActivate {
-    protected List<Observer> observers;
+    public List<Observer> observers;
 
     public ItemActivate() {
         observers = new ArrayList<>();

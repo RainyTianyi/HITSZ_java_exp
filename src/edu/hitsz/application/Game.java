@@ -67,9 +67,9 @@ public class Game extends JPanel {
     private boolean gameOverFlag = false;
 
     // 观察者模式：炸弹和冰冻道具激活器
-    private ItemActivate bombActivate;
+    private BombActivate bombActivate;
 
-    private ItemActivate iceActivate;
+    private IceActivate iceActivate;
 
     public Game() {
         heroAircraft = HeroAircraft.getHeroAircraft();
@@ -84,6 +84,9 @@ public class Game extends JPanel {
 
         this.timer = new Timer("game-action-timer", true);
 
+        // 初始化观察者
+        bombActivate = new BombActivate();
+        iceActivate = new IceActivate();
     }
 
     /**
@@ -151,6 +154,8 @@ public class Game extends JPanel {
                 crashCheckAction();
                 // 后处理
                 postProcessAction();
+                // 更新观察者
+                updateObservers();
                 // 重绘界面
                 repaint();
                 // 游戏结束检查
@@ -256,6 +261,14 @@ public class Game extends JPanel {
                 continue;
             }
             if (item.crash(heroAircraft)) {
+                // 设置道具的观察者
+                if (item instanceof BombItem) {
+                    ((BombItem) item).setBombActivate(bombActivate);
+                } else if (item instanceof IceItem) {
+                    ((IceItem) item).setIceActivate(iceActivate);
+                }
+                // 在激活前先更新观察者列表，确保当前所有敌机和子弹都被注册
+                updateObservers();
                 item.activate();
                 item.vanish();
             }
@@ -281,8 +294,8 @@ public class Game extends JPanel {
      */
     private void updateObservers() {
         // 清空观察者列表
-        bombActivate = new BombActivate();
-        iceActivate = new IceActivate();
+        bombActivate.observers.clear();
+        iceActivate.observers.clear();
         
         // 注册所有敌机
         for (EnemyAircraft enemy : enemyAircrafts) {
