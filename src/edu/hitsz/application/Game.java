@@ -45,20 +45,6 @@ public class Game extends JPanel {
     private final List<BaseBullet> enemyBullets;
     private final List<BaseItem> items;
 
-    //屏幕中出现的敌机最大数量
-    private final int enemyMaxNumber = 5;
-
-    //敌机生成周期
-    protected double enemySpawnCycle  =  20;
-    private int enemySpawnCounter = 0;
-
-    //Boss敌机生成，记录分数
-    private int bossSpawnScore = 0;
-
-    //英雄机和敌机射击周期
-    protected double shootCycle = 20;
-    private int shootCounter = 0;
-
     //当前玩家分数
     private int score = 0;
 
@@ -78,6 +64,22 @@ public class Game extends JPanel {
     private BombActivate bombActivate;
 
     private IceActivate iceActivate;
+
+    //屏幕中出现的敌机最大数量
+    private final int enemyMaxNumber = 5;
+
+    //敌机生成周期
+    protected double enemySpawnCycle = 20;
+    private int enemySpawnCounter = 0;
+
+    //Boss敌机生成，记录分数
+    private int bossSpawnTriggerScore = 500;
+    private int bossSpawnScore = 0;
+
+    //英雄机和敌机射击周期
+    protected double shootCycle = 20;
+    private int shootCounter = 0;
+
 
     public Game(String difficulty) {
         this.difficulty = difficulty;
@@ -104,6 +106,7 @@ public class Game extends JPanel {
     /**
      * 游戏启动入口，执行游戏逻辑
      */
+
     public void action() {
 
         musicController.playBgm();
@@ -117,48 +120,11 @@ public class Game extends JPanel {
                 enemySpawnCounter++;
                 if (enemySpawnCounter >= enemySpawnCycle) {
                     enemySpawnCounter = 0;
-                    EnemyAircraftFactory enemyAircraftFactory;
-                    // 随机产生除BossEnemy之外的其他Enemy
-                    int type = (int) (Math.random() * 100);
-                    if (enemyAircrafts.size() < enemyMaxNumber) {
-                        if (type < 40) {
-                            enemyAircraftFactory = new MobEnemyFactory();
-                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                        }
-                        else if (type < 70){
-                            // 随机产生精英敌机的横向速度，在[-10, 10]之间
-                            enemyAircraftFactory = new EliteEnemyFactory();
-                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                        }
-                        else if (type < 90){
-                            enemyAircraftFactory = new CrackEnemyFactory();
-                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                        }
-                        else{
-                            enemyAircraftFactory = new AceEnemyFactory();
-                            enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                        }
-                    }
+                    EnemySpawnAction();
                 }
 
-                // 积分每到达1000分且当前不存在Boss敌机时，生成Boss敌机
-                if (bossSpawnScore >= 500) {
-                    boolean hasBoss = false;
-                    for (EnemyAircraft enemy : enemyAircrafts) {
-                        if (enemy instanceof BossEnemy) {
-                            hasBoss = true;
-                            break;
-                        }
-                    }
-                    if (!hasBoss) {
-                        EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
-                        enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
-                        bossSpawnScore = 0;
-                        musicController.playBossBgm();
-                        musicController.enableBgmLoop(true);
-                    }
-                }
-
+                // 积分每到达阈值且当前不存在Boss敌机时，生成Boss敌机
+                BossSpawnAction();
                 // 检查Boss敌机是否死亡
                 checkBossDeath();
                 // 飞机发射子弹
@@ -189,6 +155,50 @@ public class Game extends JPanel {
     //***********************
     //      Action 各部分
     //***********************
+
+    private void EnemySpawnAction() {
+        EnemyAircraftFactory enemyAircraftFactory;
+        // 随机产生除BossEnemy之外的其他Enemy
+        int type = (int) (Math.random() * 100);
+        if (enemyAircrafts.size() < enemyMaxNumber) {
+            if (type < 40) {
+                enemyAircraftFactory = new MobEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else if (type < 70){
+                // 随机产生精英敌机的横向速度，在[-10, 10]之间
+                enemyAircraftFactory = new EliteEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else if (type < 90){
+                enemyAircraftFactory = new CrackEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+            else{
+                enemyAircraftFactory = new AceEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+            }
+        }
+    }
+
+    private void BossSpawnAction() {
+        if (bossSpawnScore >= bossSpawnTriggerScore) {
+            boolean hasBoss = false;
+            for (EnemyAircraft enemy : enemyAircrafts) {
+                if (enemy instanceof BossEnemy) {
+                    hasBoss = true;
+                    break;
+                }
+            }
+            if (!hasBoss) {
+                EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
+                enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
+                bossSpawnScore = 0;
+                musicController.playBossBgm();
+                musicController.enableBgmLoop(true);
+            }
+        }
+    }
 
     private void checkBossDeath() {
         boolean hasBoss = false;
