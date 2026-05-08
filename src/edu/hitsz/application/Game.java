@@ -9,6 +9,8 @@ import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.item.BaseItem;
 import edu.hitsz.item.BombItem;
+import edu.hitsz.music.MusicController;
+import edu.hitsz.music.MusicType;
 import edu.hitsz.item.IceItem;
 import edu.hitsz.observer.BombActivate;
 import edu.hitsz.observer.IceActivate;
@@ -69,6 +71,9 @@ public class Game extends JPanel {
     //游戏结束标志
     private boolean gameOverFlag = false;
 
+    //音频管理
+    private MusicController musicController = new MusicController();
+
     // 观察者模式：炸弹和冰冻道具激活器
     private BombActivate bombActivate;
 
@@ -76,6 +81,9 @@ public class Game extends JPanel {
 
     public Game(String difficulty) {
         this.difficulty = difficulty;
+        ImageManager.setBackgroundByDifficulty(difficulty);
+
+        this.playerScores = new DaoImpl(difficulty);
         heroAircraft = HeroAircraft.getHeroAircraft();
 
         enemyAircrafts = new LinkedList<>();
@@ -91,15 +99,15 @@ public class Game extends JPanel {
         // 初始化观察者
         bombActivate = new BombActivate();
         iceActivate = new IceActivate();
-
-        // 初始化排行榜数据库
-        this.playerScores = new DaoImpl(difficulty);
     }
 
     /**
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+
+        musicController.playBgm();
+        musicController.enableBgmLoop(true);
 
         // 定时任务：绘制、对象产生、碰撞判定、及结束判定
         TimerTask task = new TimerTask() {
@@ -146,9 +154,13 @@ public class Game extends JPanel {
                         EnemyAircraftFactory enemyAircraftFactory = new BossEnemyFactory();
                         enemyAircrafts.add(enemyAircraftFactory.createEnemyAircraft());
                         bossSpawnScore = 0;
+                        musicController.playBossBgm();
+                        musicController.enableBgmLoop(true);
                     }
                 }
 
+                // 检查Boss敌机是否死亡
+                checkBossDeath();
                 // 飞机发射子弹
                 shootAction();
                 // 子弹移动
@@ -178,6 +190,21 @@ public class Game extends JPanel {
     //      Action 各部分
     //***********************
 
+    private void checkBossDeath() {
+        boolean hasBoss = false;
+        for (EnemyAircraft enemy : enemyAircrafts) {
+            if (enemy instanceof BossEnemy) {
+                hasBoss = true;
+                break;
+            }
+        }
+
+        if (!hasBoss && musicController.isPlaying(MusicType.BGM_BOSS)) {
+            musicController.stopMusic(MusicType.BGM_BOSS);
+            musicController.playBgm();
+            musicController.enableBgmLoop(true);
+        }
+    }
     private void shootAction() {
         shootCounter++;
         if (shootCounter >= shootCycle) {
@@ -229,6 +256,7 @@ public class Game extends JPanel {
                 // 敌机撞击到英雄机
                 // 英雄机损失一定生命值
                 heroAircraft.decreaseHp(bullet.getPower());
+                musicController.playSoundEffect(MusicType.BULLET_HIT);
                 bullet.vanish();
             }
         }
@@ -277,6 +305,12 @@ public class Game extends JPanel {
                 // 在激活前先更新观察者列表，确保当前所有敌机和子弹都被注册
                 updateObservers();
                 item.activate();
+                musicController.playSoundEffect(MusicType.GET_SUPPLY);
+
+                // 如果是bomb道具生效，播放爆炸音效
+                if (item instanceof BombItem) {
+                    musicController.playSoundEffect(MusicType.BOMB_EXPLOSION);
+                }
                 item.vanish();
             }
         }
@@ -329,6 +363,9 @@ public class Game extends JPanel {
             gameOverFlag = true;
             System.out.println("Game Over!");
 
+            musicController.stopAllMusic();
+            musicController.playSoundEffect(MusicType.GAME_OVER);
+
             // 在事件调度线程中显示输入对话框并保存数据
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -371,8 +408,9 @@ public class Game extends JPanel {
         super.paint(g);
 
         // 绘制背景,图片滚动
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop, null);
+        BufferedImage currentBg = ImageManager.getCurrentBackgroundImage();
+        g.drawImage(currentBg, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
+        g.drawImage(currentBg, 0, this.backGroundTop, null);
         this.backGroundTop += 1;
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
