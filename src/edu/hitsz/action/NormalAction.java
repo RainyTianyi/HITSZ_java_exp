@@ -83,7 +83,7 @@ public class NormalAction extends AbstractAction {
                 // 记录Boss生成次数并更新难度（用于敌机速度和血量）
                 bossSpawnCount++;
                 updateDifficultyFactor();
-                System.out.println("Boss spawned! Current difficulty factor: " + difficultyFactor);
+                System.out.println("Boss spawned! Current difficulty factor: " + difficultyFactor + ", bossSpawnCount: " + bossSpawnCount);
                 musicController.playBossBgm();
                 musicController.enableBgmLoop(true);
             }
