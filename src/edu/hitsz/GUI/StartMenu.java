@@ -19,24 +19,21 @@ public class StartMenu {
         Simple.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 切换到游戏界面（所有难度暂时相同）
-                gammingMode.switchToGame();
+                gammingMode.switchToGame("simple");
             }
         });
 
         Normal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 切换到游戏界面（所有难度暂时相同）
-                gammingMode.switchToGame();
+                gammingMode.switchToGame("normal");
             }
         });
 
         Hard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 切换到游戏界面（所有难度暂时相同）
-                gammingMode.switchToGame();
+                gammingMode.switchToGame("hard");
             }
         });
     }

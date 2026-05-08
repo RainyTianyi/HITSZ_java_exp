@@ -8,10 +8,19 @@ import java.util.List;
 
 public class TableModel {
     // 从文件中读取数据，用于创建JTable
-    private static final String DATA_FILE = "out/production/AircraftWar-base/data/player_score.txt";
+    private static final String DATA_FILE_SIMPLE = "out/production/AircraftWar-base/data/player_score_simple.txt";
+    private static final String DATA_FILE_NORMAL = "out/production/AircraftWar-base/data/player_score_normal.txt";
+    private static final String DATA_FILE_HARD = "out/production/AircraftWar-base/data/player_score_hard.txt";
+
     private List<Object[]> rowData;
+    private String difficulty;
 
     public TableModel() {
+        this("simple");
+    }
+
+    public TableModel(String difficulty) {
+        this.difficulty = difficulty.toLowerCase();
         this.rowData = new ArrayList<>();
         loadDataFromFile();
     }
@@ -20,7 +29,8 @@ public class TableModel {
      * 从文件中加载数据
      */
     private void loadDataFromFile() {
-        File file = new File(DATA_FILE);
+        String filePath = getDataFilePath();
+        File file = new File(filePath);
         if (!file.exists()) {
             return;
         }
@@ -63,5 +73,18 @@ public class TableModel {
     public void reload() {
         rowData.clear();
         loadDataFromFile();
+    }
+
+    private String getDataFilePath() {
+        switch (difficulty) {
+            case "simple":
+                return DATA_FILE_SIMPLE;
+            case "normal":
+                return DATA_FILE_NORMAL;
+            case "hard":
+                return DATA_FILE_HARD;
+            default:
+                return DATA_FILE_SIMPLE;
+        }
     }
 }

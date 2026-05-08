@@ -17,13 +17,16 @@ public class RankingList {
     private JScrollPane tableScrollPanel;
 
     // 从接口中获取数据
-    private TableModel tableModel = new TableModel();
+    private TableModel tableModel;
     private DefaultTableModel model;
 
     private GammingMode gammingMode;
+    private String currentDifficulty;
 
     public RankingList(GammingMode gammingMode) {
         this.gammingMode = gammingMode;
+        this.currentDifficulty = "simple";
+        this.tableModel = new TableModel(currentDifficulty);
 
         initializeTable();
 
@@ -53,7 +56,7 @@ public class RankingList {
                         String time = (String) model.getValueAt(row, 3);
 
                         // 调用DAO接口对数据库进行删除
-                        DaoImpl dao = new DaoImpl();
+                        DaoImpl dao = new DaoImpl(currentDifficulty);
                         PlayerScore ps = new PlayerScore(playerName, score, time);
                         dao.delete(ps);
 
@@ -123,4 +126,9 @@ public class RankingList {
         return RankPanel;
     }
 
+    public void setDifficulty(String difficulty) {
+        this.currentDifficulty = difficulty.toLowerCase();
+        this.tableModel = new TableModel(currentDifficulty);
+        refreshData();
+    }
 }
