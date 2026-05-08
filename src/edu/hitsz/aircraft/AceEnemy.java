@@ -20,7 +20,6 @@ public class AceEnemy extends EnemyAircraft{
     // 王牌敌机发射子弹的间隔
     private static final int shootCycle = 20;
 
-    // TODO 改UML图
     // 子弹威力
     private static final int power = 30;
 

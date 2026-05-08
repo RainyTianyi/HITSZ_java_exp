@@ -30,7 +30,6 @@ public class CrackEnemy extends EnemyAircraft{
     private static final ShootPattern shootPattern = new ShootPattern(new DoubleShootStrategy());
 
     // 精锐敌机随机发射道具的概率
-    // TODO 改UML图
     private static final double PROBABILITY = 0.80;
 
     public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {

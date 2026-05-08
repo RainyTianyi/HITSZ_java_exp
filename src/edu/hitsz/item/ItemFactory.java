@@ -22,7 +22,6 @@ public class ItemFactory {
         int speedX, speedY;
 
         // 先统一指定道具的速度
-        // TODO 不同道具的速度不同
         speedX = 0;
         speedY = 10;
 
