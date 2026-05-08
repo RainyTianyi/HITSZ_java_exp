@@ -9,6 +9,8 @@ import edu.hitsz.item.ItemFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AceEnemy extends EnemyAircraft{
 
@@ -18,7 +20,6 @@ public class AceEnemy extends EnemyAircraft{
     // 王牌敌机发射子弹的间隔
     private static final int shootCycle = 20;
 
-    // TODO 改UML图
     // 子弹威力
     private static final int power = 30;
 
@@ -81,5 +82,31 @@ public class AceEnemy extends EnemyAircraft{
         BaseItem item = ItemFactory.createItem(itemTypeName, x, y);
         res.add(item);
         return res;
+    }
+
+    @Override
+    public void beBombed() {
+        // 王牌敌机被炸弹击中，损失30点血量
+        decreaseHp(30);
+    }
+
+    @Override
+    public void beIced() {
+        // 王牌敌机被冰冻，减速5s后恢复
+        int originalSpeedX = this.speedX;
+        int originalSpeedY = this.speedY;
+        this.speedX = this.speedX / 2;  // 减速为一半
+        this.speedY = this.speedY / 2;
+        
+        // 5秒后恢复原速度
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                speedX = originalSpeedX;
+                speedY = originalSpeedY;
+                timer.cancel();
+            }
+        }, 5000);
     }
 }

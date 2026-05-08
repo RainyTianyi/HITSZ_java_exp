@@ -1,10 +1,11 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.item.BaseItem;
+import edu.hitsz.observer.Observer;
 
 import java.util.List;
 
-public abstract class EnemyAircraft extends AbstractAircraft{
+public abstract class EnemyAircraft extends AbstractAircraft implements Observer {
 
     // 敌机分值
     protected int scoreValue;

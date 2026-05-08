@@ -9,6 +9,8 @@ import edu.hitsz.item.ItemFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CrackEnemy extends EnemyAircraft{
 
@@ -28,7 +30,6 @@ public class CrackEnemy extends EnemyAircraft{
     private static final ShootPattern shootPattern = new ShootPattern(new DoubleShootStrategy());
 
     // 精锐敌机随机发射道具的概率
-    // TODO 改UML图
     private static final double PROBABILITY = 0.80;
 
     public CrackEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
@@ -85,5 +86,31 @@ public class CrackEnemy extends EnemyAircraft{
             res.add(item);
         }
         return res;
+    }
+
+    @Override
+    public void beBombed() {
+        // 精锐敌机被炸弹击中，直接坠毁
+        vanish();
+    }
+
+    @Override
+    public void beIced() {
+        // 精锐敌机被冰冻，静止3s后恢复
+        int originalSpeedX = this.speedX;
+        int originalSpeedY = this.speedY;
+        this.speedX = 0;
+        this.speedY = 0;
+        
+        // 3秒后恢复原速度
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                speedX = originalSpeedX;
+                speedY = originalSpeedY;
+                timer.cancel();
+            }
+        }, 3000);
     }
 }

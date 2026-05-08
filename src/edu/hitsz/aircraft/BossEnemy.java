@@ -87,4 +87,14 @@ public class BossEnemy extends EnemyAircraft{
 
         return res;
     }
+
+    @Override
+    public void beBombed() {
+        // Boss敌机不受炸弹影响
+    }
+
+    @Override
+    public void beIced() {
+        // Boss敌机不受冰冻影响
+    }
 }

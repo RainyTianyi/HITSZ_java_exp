@@ -8,6 +8,8 @@ import edu.hitsz.item.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 精英敌机
@@ -32,7 +34,6 @@ public class EliteEnemy extends EnemyAircraft{
     private static final ShootPattern shootPattern = new ShootPattern(new SingleShootStrategy());
 
     // 精英敌机随机发射道具的概率
-    // TODO 改UML图
     private static final double PROBABILITY = 0.50;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
@@ -86,4 +87,29 @@ public class EliteEnemy extends EnemyAircraft{
         return res;
     }
 
+    @Override
+    public void beBombed() {
+        // 精英敌机被炸弹击中，直接坠毁
+        vanish();
+    }
+
+    @Override
+    public void beIced() {
+        // 精英敌机被冰冻，静止4s后恢复
+        int originalSpeedX = this.speedX;
+        int originalSpeedY = this.speedY;
+        this.speedX = 0;
+        this.speedY = 0;
+        
+        // 4秒后恢复原速度
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                speedX = originalSpeedX;
+                speedY = originalSpeedY;
+                timer.cancel();
+            }
+        }, 4000);
+    }
 }
