@@ -205,6 +205,9 @@ public abstract class AbstractAction {
         if (this.difficultyFactor > 3.0) {
             this.difficultyFactor = 3.0;
         }
+        
+        // 打印难度提升信息
+        System.out.println("提高难度！敌机生成周期：" + enemySpawnCycle + "，敌机属性提升倍率：" + difficultyFactor + "，射击周期：" + heroShootCycle + "/" + enemyShootCycle);
     }
 
     /**
