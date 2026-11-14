@@ -33,3 +33,12 @@ Thumbs.db
 
 # 本地配置文件（可能包含敏感信息）
 application-local.properties
+
+# Android / Gradle
+.gradle/
+.kotlin/
+build/
+local.properties
+.cxx/
+*.apk
+!/gradle/wrapper/gradle-wrapper.jar
