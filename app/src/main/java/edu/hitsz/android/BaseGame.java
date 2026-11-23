@@ -16,9 +16,12 @@ import edu.hitsz.android.game.GameEngine;
 import edu.hitsz.android.game.Sprite;
 import edu.hitsz.android.game.basic.AbstractFlyingObject;
 
+import java.util.function.IntConsumer;
+
 final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     private final ImageManager images;
     private final GameEngine game;
+    private final IntConsumer onFinished;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private final Paint hud = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final SurfaceHolder holder;
@@ -26,15 +29,17 @@ final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runn
     private boolean surfaceReady;
     private Thread renderThread;
     private volatile boolean running;
+    private volatile boolean completed;
     private volatile Viewport viewport;
     private volatile TouchTarget touchTarget;
     private int pointerId = -1;
     private int backgroundOffset;
 
-    BaseGame(Context context, Difficulty difficulty) {
+    BaseGame(Context context, Difficulty difficulty, IntConsumer onFinished) {
         super(context);
         images = new ImageManager(getResources(), difficulty);
         game = new GameEngine(difficulty);
+        this.onFinished = onFinished;
         hud.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
         hud.setTextSize(22);
         holder = getHolder();
@@ -75,7 +80,7 @@ final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runn
 
     // 只有 Activity 在前台且 Surface 有效时才启动，生命周期回调都在主线程。
     private void startThreadIfReady() {
-        if (foreground && surfaceReady && viewport != null && renderThread == null) {
+        if (foreground && surfaceReady && viewport != null && renderThread == null && !completed) {
             running = true;
             renderThread = new Thread(this, "aircraft-game");
             renderThread.start();
@@ -113,6 +118,11 @@ final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runn
             }
             game.step();
             drawFrame();
+            if (game.isOver()) {
+                completed = true;
+                onFinished.accept(game.score());
+                return;
+            }
             long delay = Arena.STEP_MS - (SystemClock.uptimeMillis() - started);
             if (delay > 0 && running) {
                 try {
