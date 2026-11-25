@@ -1,5 +1,6 @@
 package edu.hitsz.android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,8 +17,11 @@ import edu.hitsz.android.game.GameEngine;
 import edu.hitsz.android.game.Sprite;
 import edu.hitsz.android.game.basic.AbstractFlyingObject;
 
+import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
+// 游戏页以 Java 创建战场并传入难度和回调，因此无需从布局 XML 实例化。
+@SuppressLint("ViewConstructor")
 final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     private final ImageManager images;
     private final GameEngine game;
@@ -35,10 +39,11 @@ final class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runn
     private int pointerId = -1;
     private int backgroundOffset;
 
-    BaseGame(Context context, Difficulty difficulty, IntConsumer onFinished) {
+    BaseGame(Context context, Difficulty difficulty, IntConsumer onFinished,
+             Consumer<GameEngine.SoundCue> onSound) {
         super(context);
         images = new ImageManager(getResources(), difficulty);
-        game = new GameEngine(difficulty);
+        game = new GameEngine(difficulty, onSound);
         this.onFinished = onFinished;
         hud.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
         hud.setTextSize(22);

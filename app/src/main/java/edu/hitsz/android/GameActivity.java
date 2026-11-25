@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Insets;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,15 +13,19 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 
 import edu.hitsz.android.game.Difficulty;
+import edu.hitsz.android.game.GameEngine;
+import edu.hitsz.android.music.GameAudio;
 
 public class GameActivity extends Activity {
     private static final String EXTRA_DIFFICULTY = "difficulty";
-    static final String EXTRA_SOUND = "sound";
+    private static final String EXTRA_SOUND = "sound";
     private static final String STATE_SCORE = "result_score";
     private static final int NO_RESULT = -1;
     private static final int GAME_OVER = 1;
+    private static final int GAME_SOUND = 2;
 
     private BaseGame game;
+    private GameAudio audio;
     private Difficulty difficulty;
     private int resultScore = NO_RESULT;
     private boolean resumed;
@@ -30,7 +35,12 @@ public class GameActivity extends Activity {
     private final Handler mainHandler = new Handler(Looper.getMainLooper(), message -> {
         if (message.what == GAME_OVER && !isFinishing()) {
             resultScore = message.arg1;
+            audio.finishRound();
             showResult();
+            return true;
+        }
+        if (message.what == GAME_SOUND && !isFinishing()) {
+            audio.onCue((GameEngine.SoundCue) message.obj);
             return true;
         }
         return false;
@@ -51,8 +61,16 @@ public class GameActivity extends Activity {
             resultScore = savedInstanceState.getInt(STATE_SCORE, NO_RESULT);
         }
 
+        boolean soundEnabled = resultScore == NO_RESULT && getIntent().getBooleanExtra(EXTRA_SOUND, true);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        audio = new GameAudio(this, soundEnabled);
         game = new BaseGame(this, difficulty,
-                score -> mainHandler.obtainMessage(GAME_OVER, score, 0).sendToTarget());
+                score -> mainHandler.obtainMessage(GAME_OVER, score, 0).sendToTarget(),
+                cue -> {
+                    if (soundEnabled) {
+                        mainHandler.obtainMessage(GAME_SOUND, cue).sendToTarget();
+                    }
+                });
         FrameLayout root = new FrameLayout(this);
         root.addView(game, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -69,6 +87,7 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         resumed = true;
+        audio.resume();
         if (resultScore == NO_RESULT) {
             game.resumeGame();
         } else {
@@ -80,6 +99,7 @@ public class GameActivity extends Activity {
     protected void onPause() {
         resumed = false;
         game.pauseGame();
+        audio.pause();
         super.onPause();
     }
 
@@ -92,6 +112,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onDestroy() {
         mainHandler.removeCallbacksAndMessages(null);
+        audio.release();
         if (resultDialog != null) {
             resultDialog.dismiss();
         }

@@ -19,11 +19,19 @@ import edu.hitsz.android.game.observer.IceActivate;
 import edu.hitsz.android.game.observer.ItemActivate;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 /** 由 SurfaceView 的工作线程驱动，只处理一局内的规则和数据。 */
 public final class GameEngine {
+    public enum SoundCue {
+        BOSS_ENTER, BOSS_EXIT, BULLET_HIT, BOMB_EXPLOSION, GET_SUPPLY
+    }
+
     private final Difficulty difficulty;
+    private final Consumer<SoundCue> onSound;
+    private final EnumSet<SoundCue> sounds = EnumSet.noneOf(SoundCue.class);
     private final HeroAircraft hero = new HeroAircraft();
     private final List<EnemyAircraft> enemies = new ArrayList<>();
     private final List<BaseBullet> heroBullets = new ArrayList<>();
@@ -40,8 +48,9 @@ public final class GameEngine {
     private int bossCount;
     private EnemyAircraft boss;
 
-    public GameEngine(Difficulty difficulty) {
+    public GameEngine(Difficulty difficulty, Consumer<SoundCue> onSound) {
         this.difficulty = difficulty;
+        this.onSound = onSound;
     }
 
     public void step() {
@@ -70,7 +79,11 @@ public final class GameEngine {
         if (boss != null && boss.notValid()) {
             boss = null;
             bossProgress = 0;
+            sounds.add(SoundCue.BOSS_EXIT);
         }
+        // 同一帧的多次命中共用一个音效消息，避免叠播过多。
+        sounds.forEach(onSound);
+        sounds.clear();
     }
 
     private void spawnEnemy() {
@@ -98,6 +111,7 @@ public final class GameEngine {
             enemies.add(boss);
             bossCount++;
             bossProgress = 0;
+            sounds.add(SoundCue.BOSS_ENTER);
         }
     }
 
@@ -129,6 +143,7 @@ public final class GameEngine {
             if (!bullet.notValid() && !hero.notValid() && bullet.crash(hero)) {
                 hero.decreaseHp(bullet.getPower());
                 bullet.vanish();
+                sounds.add(SoundCue.BULLET_HIT);
             }
         }
         for (BaseBullet bullet : heroBullets) {
@@ -139,6 +154,7 @@ public final class GameEngine {
                 if (!enemy.notValid() && enemy.crash(bullet)) {
                     enemy.decreaseHp(bullet.getPower());
                     bullet.vanish();
+                    sounds.add(SoundCue.BULLET_HIT);
                     if (enemy.notValid()) {
                         addScore(enemy);
                         items.addAll(enemy.generateItem());
@@ -176,12 +192,15 @@ public final class GameEngine {
         item.vanish();
 
         if (item instanceof BombItem) {
+            sounds.add(SoundCue.BOMB_EXPLOSION);
             for (EnemyAircraft enemy : bomb.getBombedEnemies()) {
                 if (enemy.notValid()) {
                     // 炸弹击毁的敌机加分，沿用原版不再掉落道具的规则。
                     addScore(enemy);
                 }
             }
+        } else {
+            sounds.add(SoundCue.GET_SUPPLY);
         }
     }
 

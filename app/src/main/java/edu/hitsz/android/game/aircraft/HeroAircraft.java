@@ -30,8 +30,8 @@ public class HeroAircraft extends AbstractAircraft {
     }
 
     public void moveTo(float x, float y) {
-        float halfWidth = getWidth() / 2f;
-        float halfHeight = getHeight() / 2f;
+        int halfWidth = (getWidth() + 1) / 2;
+        int halfHeight = (getHeight() + 1) / 2;
         locationX = Math.round(Math.max(halfWidth, Math.min(x, Arena.WIDTH - halfWidth)));
         locationY = Math.round(Math.max(halfHeight, Math.min(y, Arena.HEIGHT - halfHeight)));
     }
